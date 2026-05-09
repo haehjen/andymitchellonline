@@ -68,9 +68,9 @@ const componentData = {
   },
   "Cloudflare DNS": {
     title: "Cloudflare",
-    subtitle: "Edge Security & DNS",
+    subtitle: "Edge Security, DNS and CDN",
     icon: "☁️",
-    description: "Cloudflare provides the WAF (Web Application Firewall) and high-speed DNS resolution. It hides the home IP behind a proxy layer.",
+    description: "Cloudflare provides the WAF (Web Application Firewall) and high-speed DNS resolution. It hides the home IP behind a proxy layer. It also hosts a simple landing page for the root domain and handles SSL termination before forwarding to the home network.",
     specs: ["Full HSTS Encryption", "DDoS Protection", "Edge Caching"]
   },
   "YouFibre Gateway": {
@@ -155,7 +155,7 @@ export default function HomelabLanding() {
                        onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
                   <span className="hidden text-[#f38020] font-black tracking-tighter text-sm italic">CLOUDFLARE</span>
                </div>
-               <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">DNS & Security</p>
+               <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">DNS & WEBPAGE HOST</p>
             </div>
             <div className="w-px h-6 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
@@ -194,11 +194,11 @@ export default function HomelabLanding() {
 
         {/* Service Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20">
-          <ServiceCard title="Minecraft" subtitle="Game Hosting" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
-          <ServiceCard title="DayZ Server" subtitle="Game Hosting" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
-          <ServiceCard title="Mitch AI" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
-          <ServiceCard title="Home Services" subtitle="Utilities" port="Port: Various" icon="🏠" colorClass="bg-blue-400" onClick={() => handleCardClick("Home Services")} />
-          <ServiceCard title="Docker" subtitle="Apps" port="Isolated" icon="🐳" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
+          <ServiceCard title="Pidgiemon" subtitle="Custom Minecraft Server" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
+          <ServiceCard title="iAMLegendary" subtitle="Custom DayZ Server" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
+          <ServiceCard title="M.I.T.C.H" subtitle="Custom Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
+          <ServiceCard title="FileBrowser" subtitle="Self Hosted Public File Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" onClick={() => handleCardClick("Home Services")} />
+          <ServiceCard title="MitchMesh" subtitle="Autonomous LoRa Drone Network" port="Isolated" icon="📡" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
         </div>
 
         {/* Hardware Footer */}
