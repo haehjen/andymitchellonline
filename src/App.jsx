@@ -108,84 +108,63 @@ export default function HomelabLanding() {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-blue-500/30 overflow-x-hidden">
       
-      {/* Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" 
-          onClick={() => setIsSidebarOpen(false)} 
-        />
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40" onClick={() => setIsSidebarOpen(false)} />
       )}
       
-      <Sidebar 
-        isOpen={isSidebarOpen} 
-        onClose={() => setIsSidebarOpen(false)} 
-        details={selectedComponent} 
-      />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} details={selectedComponent} />
 
-      {/* Navigation */}
       <nav className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto relative z-10">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg">🏠</div>
           <span className="font-bold text-white tracking-tighter text-xl">Homelab OS</span>
         </div>
-        <div className="hidden md:flex gap-8 text-[10px] font-black uppercase tracking-widest text-slate-500">
-          <a href="#" className="text-blue-400 border-b border-blue-400">Overview</a>
-          <a href="#" className="hover:text-white transition-colors">Infrastructure</a>
-          <a href="#" className="hover:text-white transition-colors">Connect</a>
-        </div>
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-24 text-center">
         
-        {/* Hero Section */}
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
-          One Home. <span className="italic font-light text-slate-500 font-serif">One IP.</span><br />
-          <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-            Endless Possibilities.
-          </span>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
+          One Home. <span className="italic font-light text-slate-500">One IP.</span>
         </h1>
-        <p className="max-w-2xl mx-auto text-slate-400 mb-12 text-sm md:text-base leading-relaxed opacity-80">
-          A production-grade infrastructure running 24/7, <br className="hidden md:block" />
-          managed through a single paid Static IP and Zero Cloud Costs.
+        <p className="max-w-2xl mx-auto text-slate-500 mb-12 text-sm uppercase font-bold tracking-[0.2em]">
+          Endless Possibilities
         </p>
 
-        {/* --- Central Flow Chain --- */}
-        <div className="relative mb-20 flex flex-col items-center scale-90 md:scale-95 origin-top">
+        {/* --- Central Flow Chain (FIXED ALIGNMENT) --- */}
+        <div className="relative mb-20 flex flex-col items-center">
           
           {/* Public Internet */}
-          <div className="flex flex-col items-center mb-8">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.2)]">🌐</div>
+          <div className="flex flex-col items-center mb-0 relative">
+            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
+            <div className="w-px h-10 bg-gradient-to-b from-blue-500/50 to-blue-500/50 mt-2"></div>
           </div>
 
           {/* Fasthosts */}
-          <div className="relative mb-8 flex flex-col items-center">
-            <div onClick={() => handleCardClick("Fasthosts Registrar")} className="group relative cursor-pointer bg-white/5 border border-slate-700 px-6 py-3 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
-              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-10 blur-lg transition-opacity bg-blue-500"></div>
-              <img src="https://www.fasthosts.co.uk/static/images/logos/fasthosts-logo.svg" alt="Fasthosts" className="h-4 brightness-200 grayscale group-hover:grayscale-0 transition-all" />
-              <p className="text-[8px] text-slate-500 font-mono mt-1 uppercase tracking-tighter">Registrar</p>
+          <div className="relative flex flex-col items-center">
+            <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-48 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
+               <span className="text-white font-black tracking-tighter text-sm italic">Fasthosts</span>
+               <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">Registrar</p>
             </div>
-            <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
+            <div className="w-px h-10 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
           {/* Cloudflare */}
-          <div className="relative mb-8 flex flex-col items-center">
-            <div onClick={() => handleCardClick("Cloudflare DNS")} className="group relative cursor-pointer bg-white/5 border border-slate-700 px-6 py-3 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
-              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-10 blur-lg transition-opacity bg-orange-500"></div>
-              <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" alt="Cloudflare" className="h-4" />
-              <p className="text-[8px] text-slate-500 font-mono mt-1 uppercase tracking-tighter">DNS & Security</p>
+          <div className="relative flex flex-col items-center">
+            <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-48 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
+               <span className="text-white font-black tracking-tighter text-sm italic">Cloudflare</span>
+               <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">DNS & Security</p>
             </div>
-            <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
+            <div className="w-px h-10 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
 
           {/* YouFibre */}
-          <div className="relative mb-8 flex flex-col items-center">
-            <div onClick={() => handleCardClick("YouFibre Gateway")} className="group relative cursor-pointer bg-white/5 border border-slate-700 px-8 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
-              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-10 blur-lg transition-opacity bg-red-600"></div>
-              <img src="https://www.youfibre.com/images/logo.svg" alt="YouFibre" className="h-5 brightness-125 grayscale group-hover:grayscale-0 transition-all" />
-              <p className="text-[9px] text-slate-400 font-mono mt-1 uppercase">Static IP <span className="text-red-500 font-bold">Paid</span></p>
+          <div className="relative flex flex-col items-center">
+            <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-48 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
+               <span className="text-white font-black tracking-tighter text-sm italic">YouFibre</span>
+               <p className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mt-1">Static IP <span className="text-red-500 font-bold">PAID</span></p>
             </div>
-            <div className="w-px h-10 bg-gradient-to-b from-red-500 to-emerald-500"></div>
+            <div className="w-px h-12 bg-gradient-to-b from-red-500 to-emerald-500"></div>
           </div>
 
           {/* Nginx Hub */}
