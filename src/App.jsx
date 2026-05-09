@@ -49,20 +49,28 @@ const Sidebar = ({ isOpen, onClose, details }) => (
   </div>
 );
 
+// --- Extended Data Layer ---
 const componentData = {
   "GitHub CI/CD": {
     title: "GitHub",
     subtitle: "Version Control & CI/CD",
     icon: "🐙",
-    description: "The source of truth for the Homelab OS frontend. Pushes to the 'main' branch trigger an automated build and deployment via Cloudflare Pages.",
+    description: "Source of truth for Homelab OS. Pushes trigger automated builds via Cloudflare Pages.",
     specs: ["Vite / React Source", "Actions Workflow", "Automated SSL"]
   },
   "Identity Providers": {
     title: "Identity & MFA",
     subtitle: "Authentication Layer",
     icon: "🔑",
-    description: "Centralized identity management for external service access. Integrates multi-factor authentication for administrative dashboards via Microsoft Entra, Google, and Duo Security.",
-    specs: ["Duo Security 2FA", "Microsoft Entra ID", "Google Workspace"]
+    description: "Hybrid identity management syncing local Active Directory with Microsoft Entra ID. Features 2-way writeback and Duo MFA for RDS and admin access.",
+    specs: ["Duo Security 2FA", "Entra ID / AD Connect", "2-Way Writeback"]
+  },
+  "Windows Domain": {
+    title: "Active Directory",
+    subtitle: "Hybrid RDS Farm",
+    icon: "🪟",
+    description: "Local Windows Domain Controller synced with Entra ID. Powers an RDS Session Host cluster serving RemoteApps secured by Duo MFA.",
+    specs: ["AD DS / Hybrid Sync", "RDS Gateway / Web", "Cisco Packet Tracer", "Notepad++ RemoteApp"]
   }
 };
 
@@ -113,10 +121,9 @@ export default function HomelabLanding() {
             <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             
-            <div className="hidden lg:block absolute left-[55%] top-6 w-[160px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
+            <div className="hidden lg:block absolute left-[55%] top-6 w-[200px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
             
-            {/* Identity Box - UPDATED WITH ASSETS */}
-            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[55%] top-[-15px] ml-[160px] w-56 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[55%] top-[-15px] ml-[200px] w-56 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-3">Identity & MFA</p>
                 <div className="flex gap-4 items-center h-5">
                    <img src="/entraid.svg" alt="Entra" className="h-full w-auto opacity-80" />
@@ -141,12 +148,11 @@ export default function HomelabLanding() {
             <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
-          {/* Cloudflare + GitHub - INCREASED OFFSET */}
+          {/* Cloudflare + GitHub */}
           <div className="relative flex flex-col items-center">
+            <div className="hidden lg:block absolute right-[55%] top-8 w-[240px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
             
-            <div className="hidden lg:block absolute right-[55%] top-8 w-[200px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
-            
-            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[200px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[240px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <div className="flex items-center gap-3 justify-center mb-1">
                    <span className="text-xl">🐙</span>
                    <span className="text-[10px] font-black text-white uppercase tracking-widest">GitHub Repo</span>
@@ -188,21 +194,22 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* --- Wide Bus Bar --- */}
+        {/* --- Expanded Bus Bar (6 Way) --- */}
         <div className="relative w-full max-w-7xl mx-auto mb-4">
-           <div className="absolute top-0 left-[10.5%] right-[10.5%] h-px bg-emerald-500/40"></div>
-           <div className="flex justify-between w-full px-[10.5%]">
-              {[...Array(5)].map((_, i) => <div key={i} className="w-px h-6 bg-emerald-500/40"></div>)}
+           <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40"></div>
+           <div className="flex justify-between w-full px-[8%]">
+              {[...Array(6)].map((_, i) => <div key={i} className="w-px h-6 bg-emerald-500/40"></div>)}
            </div>
         </div>
 
-        {/* Service Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20">
-          <ServiceCard title="Pidgiemon" subtitle="Custom Minecraft Server" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
-          <ServiceCard title="iAMLegendary" subtitle="Custom DayZ Server" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
+        {/* --- Service Grid (Updated to 6 Cards) --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative z-20">
+          <ServiceCard title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
+          <ServiceCard title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
+          <ServiceCard title="Active Directory" subtitle="Hybrid Windows Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" onClick={() => handleCardClick("Windows Domain")} />
           <ServiceCard title="M.I.T.C.H" subtitle="Custom Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
-          <ServiceCard title="FileBrowser" subtitle="Self Hosted Public File Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" onClick={() => handleCardClick("Home Services")} />
-          <ServiceCard title="MitchMesh" subtitle="Autonomous LoRa Drone Network" port="Isolated" icon="📡" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
+          <ServiceCard title="FileBrowser" subtitle="Public File Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" onClick={() => handleCardClick("Home Services")} />
+          <ServiceCard title="MitchMesh" subtitle="LoRa Drone Network" port="Isolated" icon="📡" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
         </div>
 
         {/* Hardware Footer */}
@@ -217,9 +224,9 @@ export default function HomelabLanding() {
               <p className="text-slate-500 text-xs uppercase tracking-wider font-semibold opacity-70">High Availability • ZFS Storage • 24/7 Virtualization</p>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              <ProxmoxNode nodeName="Node 1" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
-              <ProxmoxNode nodeName="Node 2" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
-              <ProxmoxNode nodeName="Node 3" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
+              <ProxmoxNode nodeName="Mcgregor" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
+              <ProxmoxNode nodeName="Pereira" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
+              <ProxmoxNode nodeName="Strickland" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
             </div>
             <div className="group bg-blue-600/10 border border-blue-500/20 p-5 rounded-2xl text-center min-w-[140px] transition-all hover:bg-blue-600/20 cursor-pointer" onClick={() => handleCardClick("Storage Pool")}>
               <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">🛢️</div>
