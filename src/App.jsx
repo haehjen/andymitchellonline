@@ -65,29 +65,12 @@ const componentData = {
     description: "Hybrid identity management syncing local Active Directory with Microsoft Entra ID. Features 2-way writeback and Duo MFA.",
     specs: ["Duo Security 2FA", "Entra ID / AD Connect", "2-Way Writeback"]
   },
-  "Minecraft Server": {
-    title: "Pidgiemon",
-    subtitle: "Minecraft VM",
-    description: "High-performance Minecraft instance. Configuration and custom plugins managed via GitHub.",
-    specs: ["Repo: pidgiemon-server", "ZFS Backed Storage", "Automated Backups"]
-  },
-  "DayZ Server": {
-    title: "iAMLegendary",
-    subtitle: "DayZ VM",
-    description: "Custom DayZ Standalone server. Mod lists and server configuration tracked in version control.",
-    specs: ["Repo: iamlegendary-config", "Custom Mod Support", "Performance Optimized"]
-  },
-  "Mitch AI": {
-    title: "M.I.T.C.H",
-    subtitle: "Local AI Model",
-    description: "Private LLM instance. Model training scripts and API integration code hosted on GitHub.",
-    specs: ["Repo: mitch-ai-core", "CUDA Enabled", "Private API"]
-  },
-  "Docker Containers": {
-    title: "MitchMesh",
-    subtitle: "LoRa Drone Network",
-    description: "Autonomous LoRa mesh network. Firmware for drone nodes and ground stations developed and versioned in GitHub.",
-    specs: ["Repo: mitchmesh-firmware", "LoRaWAN Protocol", "ESP32/Drones"]
+  "LDAP SSO": {
+    title: "Proxmox LDAP Integration",
+    subtitle: "Single Sign-On Bridge",
+    icon: "🔐",
+    description: "Connects the Proxmox Virtual Environment to the Windows Domain Controller. Allows administrative access to the cluster using Active Directory credentials.",
+    specs: ["LDAP over SSL (LDAPS)", "AD Group Mapping", "Centralized Auth"]
   }
 };
 
@@ -99,7 +82,7 @@ export default function HomelabLanding() {
     const data = componentData[name] || { 
         title: name, 
         subtitle: "Infrastructure Component", 
-        description: "Configuration details managed via Proxmox and Nginx Proxy Manager." 
+        description: "Configuration details managed via Proxmox and Active Directory." 
     };
     setSelectedComponent(data);
     setIsSidebarOpen(true);
@@ -164,10 +147,10 @@ export default function HomelabLanding() {
 
           {/* Cloudflare + Multi-Repo Branch */}
           <div className="relative flex flex-col items-center">
-            <div className="hidden lg:block absolute right-[55%] top-8 w-[240px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
+            {/* Fixed Source Repos Line */}
+            <div className="hidden lg:block absolute right-[100%] top-8 w-[50%] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
             
-            {/* GitHub Hub Box */}
-            <div onClick={() => handleCardClick("GitHub Source")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[240px] w-48 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("GitHub Source")} className="hidden lg:block absolute right-[100%] top-[-10px] mr-4 w-48 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <div className="flex items-center gap-3 justify-center mb-1">
                    <span className="text-xl">🐙</span>
                    <span className="text-[10px] font-black text-white uppercase tracking-widest">Source Repos</span>
@@ -205,14 +188,9 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* --- Multi-Repo Bus Bar (Left Side) --- */}
+        {/* --- Multi-Repo Bus Bar --- */}
         <div className="relative w-full max-w-7xl mx-auto mb-4">
-           {/* Primary Bus Bar (Grid Connections) */}
            <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40"></div>
-           
-           {/* GitHub Vertical Descent (Hidden line representing code flow to all cards) */}
-           <div className="hidden lg:block absolute top-[-100px] left-[5%] w-[3%] h-[100px] border-l border-b border-orange-500/20 rounded-bl-2xl"></div>
-           
            <div className="flex justify-between w-full px-[8%]">
               {[...Array(6)].map((_, i) => <div key={i} className="w-px h-6 bg-emerald-500/40"></div>)}
            </div>
@@ -222,15 +200,25 @@ export default function HomelabLanding() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative z-20">
           <ServiceCard title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
           <ServiceCard title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
-          <ServiceCard title="Active Directory" subtitle="Hybrid Windows Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" onClick={() => handleCardClick("Windows Domain")} />
+          
+          {/* Active Directory with LDAP Downward Connector */}
+          <div className="relative flex flex-col items-center">
+            <ServiceCard title="Active Directory" subtitle="Hybrid Windows Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" onClick={() => handleCardClick("Windows Domain")} />
+            {/* The SSO / LDAP Red Connector */}
+            <div className="absolute top-[100%] w-px h-16 bg-red-500/50 z-0">
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 uppercase tracking-tighter border border-red-500/30 rounded">SSO</div>
+            </div>
+          </div>
+
           <ServiceCard title="M.I.T.C.H" subtitle="Custom Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
           <ServiceCard title="FileBrowser" subtitle="Public File Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" onClick={() => handleCardClick("Home Services")} />
           <ServiceCard title="MitchMesh" subtitle="LoRa Drone Network" port="Isolated" icon="📡" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
         </div>
 
-        {/* Hardware Footer */}
-        <div className="mt-16 p-6 border border-white/10 rounded-[2.5rem] bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden backdrop-blur-sm">
+        {/* Hardware Footer + LDAP Integration */}
+        <div className="mt-20 p-6 border border-white/10 rounded-[2.5rem] bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden backdrop-blur-sm">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+          
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-left max-w-xs cursor-default">
               <div className="flex items-center gap-2 mb-2">
@@ -239,11 +227,22 @@ export default function HomelabLanding() {
               </div>
               <p className="text-slate-500 text-xs uppercase tracking-wider font-semibold opacity-70">High Availability • ZFS Storage • 24/7 Virtualization</p>
             </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <ProxmoxNode nodeName="Node 1" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
-              <ProxmoxNode nodeName="Node 2" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
-              <ProxmoxNode nodeName="Node 3" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
+
+            <div className="flex items-center gap-6">
+               {/* LDAP BRIDGE BOX */}
+               <div onClick={() => handleCardClick("LDAP SSO")} className="group bg-red-500/5 border border-red-500/20 px-6 py-4 rounded-2xl text-center min-w-[120px] transition-all hover:bg-red-500/10 cursor-pointer">
+                  <div className="text-xl mb-1 group-hover:scale-110 transition-transform">🔐</div>
+                  <p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p>
+                  <p className="text-slate-500 text-[8px] font-mono mt-1 italic uppercase">Auth Bridge</p>
+               </div>
+
+               <div className="flex flex-wrap justify-center gap-4">
+                 <ProxmoxNode nodeName="Node 1" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
+                 <ProxmoxNode nodeName="Node 2" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
+                 <ProxmoxNode nodeName="Node 3" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
+               </div>
             </div>
+
             <div className="group bg-blue-600/10 border border-blue-500/20 p-5 rounded-2xl text-center min-w-[140px] transition-all hover:bg-blue-600/20 cursor-pointer" onClick={() => handleCardClick("Storage Pool")}>
               <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">🛢️</div>
               <p className="text-white font-bold text-xs uppercase tracking-tighter">ZFS Storage</p>
