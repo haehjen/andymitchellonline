@@ -49,7 +49,6 @@ const Sidebar = ({ isOpen, onClose, details }) => (
   </div>
 );
 
-// --- Extended Data Layer ---
 const componentData = {
   "GitHub CI/CD": {
     title: "GitHub",
@@ -109,16 +108,14 @@ export default function HomelabLanding() {
         {/* --- Central Flow Chain --- */}
         <div className="relative flex flex-col items-center">
           
-          {/* Public Internet + Identity Branch */}
+          {/* Public Internet + Identity */}
           <div className="flex flex-col items-center mb-0 relative">
             <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             
-            {/* Connection Line to Identity */}
-            <div className="hidden lg:block absolute left-[52%] top-6 w-[120px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
+            <div className="hidden lg:block absolute left-[55%] top-6 w-[140px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
             
-            {/* Identity Box - REFINED */}
-            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[52%] top-[-10px] ml-[120px] w-52 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[55%] top-[-10px] ml-[140px] w-52 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-2">Identity & MFA</p>
                 <div className="flex gap-4 items-center">
                    <span title="Microsoft" className="text-sm opacity-90">🪟</span>
@@ -127,29 +124,28 @@ export default function HomelabLanding() {
                 </div>
                 <p className="text-[8px] text-white/70 mt-2 font-mono uppercase tracking-tighter">Auth Service Providers</p>
             </div>
-
-            <div className="w-px h-6 bg-blue-500/30 mt-2"></div>
+            <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
           </div>
 
-          {/* Fasthosts */}
+          {/* Fasthosts - RESTORED LOGO */}
           <div className="relative flex flex-col items-center">
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl">
+            <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
                <div className="h-6 flex items-center justify-center px-4">
-                  <span className="text-white font-black tracking-tighter text-sm italic">FASTHOSTS</span>
+                  <img src="/fasthosts.svg" alt="Fasthosts" className="max-h-full max-w-[140px] brightness-0 invert group-hover:invert-0 group-hover:brightness-100 transition-all duration-300" 
+                       onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+                  <span className="hidden text-white font-black tracking-tighter text-sm italic">FASTHOSTS</span>
                </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">Registrar</p>
             </div>
-            <div className="w-px h-6 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
+            <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
-          {/* Cloudflare + GitHub Branch */}
+          {/* Cloudflare + GitHub - COLLISION FIXED */}
           <div className="relative flex flex-col items-center">
             
-            {/* Connection Line to GitHub */}
-            <div className="hidden lg:block absolute right-[52%] top-8 w-[100px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
+            <div className="hidden lg:block absolute right-[55%] top-8 w-[160px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
             
-            {/* GitHub Box - REFINED AND CLOSER */}
-            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[52%] top-[-10px] mr-[100px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[160px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <div className="flex items-center gap-3 justify-center mb-1">
                    <span className="text-xl">🐙</span>
                    <span className="text-[10px] font-black text-white uppercase tracking-widest">GitHub Repo</span>
@@ -157,29 +153,33 @@ export default function HomelabLanding() {
                 <p className="text-[8px] text-orange-400 font-mono uppercase tracking-widest font-bold">CI/CD Pipeline</p>
             </div>
 
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl">
+            <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
                <div className="h-6 flex items-center justify-center px-4">
-                  <span className="text-[#f38020] font-black tracking-tighter text-sm italic">CLOUDFLARE</span>
+                  <img src="/cloudflare.svg" alt="Cloudflare" className="max-h-full max-w-[140px]" 
+                       onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+                  <span className="hidden text-[#f38020] font-black tracking-tighter text-sm italic">CLOUDFLARE</span>
                </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">DNS & WEBPAGE HOST</p>
             </div>
-            <div className="w-px h-6 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
+            <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
 
-          {/* YouFibre */}
+          {/* YouFibre - RESTORED LOGO */}
           <div className="relative flex flex-col items-center">
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl">
+            <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
                <div className="h-6 flex items-center justify-center px-4">
-                  <span className="text-white font-black tracking-tighter text-sm italic uppercase">YOUFIBRE</span>
+                  <img src="/youfibre.png" alt="YouFibre" className="max-h-full max-w-[140px] grayscale group-hover:grayscale-0 transition-all duration-300 object-contain" 
+                       onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+                  <span className="hidden text-white font-black tracking-tighter text-sm italic uppercase">YOUFIBRE</span>
                </div>
                <p className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mt-1">Static IP <span className="text-red-500 font-bold italic">PAID</span></p>
             </div>
-            <div className="w-px h-8 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
+            <div className="w-px h-10 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
           </div>
 
           {/* Nginx Hub */}
           <div className="relative flex flex-col items-center">
-            <div className="w-56 bg-white/5 border border-emerald-500/50 py-4 rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+            <div onClick={() => handleCardClick("Nginx Reverse Proxy")} className="w-56 bg-white/5 border border-emerald-500/50 py-4 rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.1)] group cursor-pointer hover:scale-105 transition-all">
               <div className="text-emerald-500 text-sm font-black leading-none uppercase italic">Nginx Proxy</div>
               <p className="font-bold uppercase tracking-widest text-[8px] text-slate-500 mt-1">Central Routing</p>
             </div>
