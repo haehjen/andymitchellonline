@@ -89,8 +89,6 @@ const componentData = {
   }
 };
 
-// --- Main App ---
-
 export default function HomelabLanding() {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -132,15 +130,12 @@ export default function HomelabLanding() {
 
         {/* --- Central Flow Chain --- */}
         <div className="relative flex flex-col items-center">
-          
-          {/* Public Internet */}
           <div className="flex flex-col items-center mb-0 relative">
             <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             <div className="w-px h-6 bg-blue-500/30 mt-2"></div>
           </div>
 
-          {/* Fasthosts */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
                <div className="h-6 flex items-center justify-center px-4">
@@ -153,7 +148,6 @@ export default function HomelabLanding() {
             <div className="w-px h-6 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
-          {/* Cloudflare */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
                <div className="h-6 flex items-center justify-center px-4">
@@ -166,7 +160,6 @@ export default function HomelabLanding() {
             <div className="w-px h-6 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
 
-          {/* YouFibre */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
                <div className="h-6 flex items-center justify-center px-4">
@@ -179,7 +172,6 @@ export default function HomelabLanding() {
             <div className="w-px h-8 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
           </div>
 
-          {/* Nginx Hub */}
           <div className="relative flex flex-col items-center mb-0">
             <div 
               className="w-56 group relative cursor-pointer bg-white/5 border border-emerald-500/50 py-4 rounded-xl transition-all hover:scale-105 shadow-[0_0_30px_rgba(16,185,129,0.1)]"
@@ -192,32 +184,25 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* --- Wide Bus Bar Section --- */}
+        {/* Wide Bus Bar Section */}
         <div className="relative w-full max-w-7xl mx-auto mb-4">
-           {/* Horizontal Bus Bar - centered and spanning across grid columns */}
            <div className="absolute top-0 left-[10.5%] right-[10.5%] h-px bg-emerald-500/40"></div>
-           
-           {/* Vertical drop lines for the 5 cards below */}
            <div className="flex justify-between w-full px-[10.5%]">
-              <div className="w-px h-6 bg-emerald-500/40"></div>
-              <div className="w-px h-6 bg-emerald-500/40"></div>
-              <div className="w-px h-6 bg-emerald-500/40"></div>
-              <div className="w-px h-6 bg-emerald-500/40"></div>
-              <div className="w-px h-6 bg-emerald-500/40"></div>
+              {[...Array(5)].map((_, i) => <div key={i} className="w-px h-6 bg-emerald-500/40"></div>)}
            </div>
         </div>
 
         {/* Service Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20">
-          <ServiceCard title="Minecraft" subtitle="PidgieMon Custom Modpack" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
-          <ServiceCard title="DayZ Server" subtitle="Custom DayZ Server" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
-          <ServiceCard title="M.I.T.C.H" subtitle="SelfHosted AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
-          <ServiceCard title="FileShare" subtitle="Public SelfHosted FileShare" port="Port: 5000" icon="🏠" colorClass="bg-blue-400" onClick={() => handleCardClick("FileShare")} />
-          <ServiceCard title="Mitch Mesh" subtitle="Autonomous LoRa Network" port="Isolated" icon="🕸️" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
+          <ServiceCard title="Minecraft" subtitle="Game Hosting" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
+          <ServiceCard title="DayZ Server" subtitle="Game Hosting" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
+          <ServiceCard title="Mitch AI" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
+          <ServiceCard title="Home Services" subtitle="Utilities" port="Port: Various" icon="🏠" colorClass="bg-blue-400" onClick={() => handleCardClick("Home Services")} />
+          <ServiceCard title="Docker" subtitle="Apps" port="Isolated" icon="🐳" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
         </div>
 
         {/* Hardware Footer */}
-        <div className="mt-20 p-8 border border-white/10 rounded-[2.5rem] bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden backdrop-blur-sm">
+        <div className="mt-16 p-6 border border-white/10 rounded-[2.5rem] bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden backdrop-blur-sm">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-left max-w-xs cursor-default">
@@ -230,9 +215,9 @@ export default function HomelabLanding() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              <ProxmoxNode nodeName="Mcgregor" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
-              <ProxmoxNode nodeName="Pereira" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
-              <ProxmoxNode nodeName="Strickland" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
+              <ProxmoxNode nodeName="Node 1" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
+              <ProxmoxNode nodeName="Node 2" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
+              <ProxmoxNode nodeName="Node 3" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
             </div>
             <div className="group bg-blue-600/10 border border-blue-500/20 p-5 rounded-2xl text-center min-w-[140px] transition-all hover:bg-blue-600/20 cursor-pointer" onClick={() => handleCardClick("Storage Pool")}>
               <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">🛢️</div>
@@ -242,31 +227,32 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* 6. Connection Journey Footer */}
-<div className="mt-24 max-w-4xl mx-auto pt-12 border-t border-white/5">
-  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-12">The Connection Journey</h3>
-  <div className="flex flex-col md:flex-row justify-between items-center gap-8 relative">
-    
-    {/* Connecting Line (Desktop) */}
-    <div className="hidden md:block absolute top-5 left-0 w-full h-px bg-gradient-to-r from-blue-500/20 via-emerald-500/50 to-blue-500/20"></div>
+        {/* COMPACT CONNECTION JOURNEY FOOTER */}
+        <div className="mt-12 max-w-5xl mx-auto pt-8 border-t border-white/5">
+          <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-slate-500 mb-8">The Connection Journey</h3>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative">
+            
+            {/* Connecting Line (Desktop) */}
+            <div className="hidden md:block absolute top-6 left-0 w-full h-px bg-gradient-to-r from-blue-500/10 via-emerald-500/40 to-blue-500/10"></div>
 
-    {[
-      { step: "01", label: "DNS Lookup", desc: "andymitchell.online", color: "text-blue-400" },
-      { step: "02", label: "WAF Filter", desc: "Cloudflare Edge", color: "text-orange-400" },
-      { step: "03", label: "Entry", desc: "YouFibre Static IP", color: "text-red-400" },
-      { step: "04", label: "Routing", desc: "Nginx SSL Handoff", color: "text-emerald-400" },
-      { step: "05", label: "Service", desc: "Proxmox VM/LXC", color: "text-blue-400" }
-    ].map((item, i) => (
-      <div key={i} className="relative z-10 flex flex-col items-center group">
-        <div className={`w-10 h-10 rounded-full bg-[#020617] border border-white/10 flex items-center justify-center text-[10px] font-black mb-4 group-hover:border-white/40 transition-colors ${item.color}`}>
-          {item.step}
+            {[
+              { step: "01", label: "DNS Lookup", desc: "andymitchell.online", color: "text-blue-400" },
+              { step: "02", label: "WAF Filter", desc: "Cloudflare Edge", color: "text-orange-400" },
+              { step: "03", label: "ISP Entry", desc: "YouFibre Static IP", color: "text-red-400" },
+              { step: "04", label: "Routing", desc: "Nginx SSL Handoff", color: "text-emerald-400" },
+              { step: "05", label: "Service", desc: "Proxmox VM/LXC", color: "text-blue-400" }
+            ].map((item, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center group flex-1">
+                <div className={`w-12 h-12 rounded-full bg-[#020617] border border-white/20 flex items-center justify-center text-[11px] font-black mb-3 group-hover:border-white/50 transition-all ${item.color} shadow-lg`}>
+                  {item.step}
+                </div>
+                <p className="text-white font-bold text-sm mb-1 uppercase tracking-tight">{item.label}</p>
+                <p className="text-[10px] text-slate-500 font-mono italic uppercase tracking-tighter whitespace-nowrap">{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        <p className="text-white font-bold text-xs mb-1 uppercase tracking-tight">{item.label}</p>
-        <p className="text-[9px] text-slate-500 font-mono italic uppercase">{item.desc}</p>
-      </div>
-    ))}
-  </div>
-</div>
+
       </main>
     </div>
   );
