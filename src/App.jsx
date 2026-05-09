@@ -61,7 +61,7 @@ const componentData = {
     title: "Identity & MFA",
     subtitle: "Authentication Layer",
     icon: "🔑",
-    description: "Centralized identity management for external service access. Integrates multi-factor authentication for administrative dashboards.",
+    description: "Centralized identity management for external service access. Integrates multi-factor authentication for administrative dashboards via Microsoft Entra, Google, and Duo Security.",
     specs: ["Duo Security 2FA", "Microsoft Entra ID", "Google Workspace"]
   }
 };
@@ -113,21 +113,22 @@ export default function HomelabLanding() {
             <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             
-            <div className="hidden lg:block absolute left-[55%] top-6 w-[140px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
+            <div className="hidden lg:block absolute left-[55%] top-6 w-[160px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
             
-            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[55%] top-[-10px] ml-[140px] w-52 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
-                <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-2">Identity & MFA</p>
-                <div className="flex gap-4 items-center">
-                   <span title="Microsoft" className="text-sm opacity-90">🪟</span>
-                   <span title="Google" className="text-sm opacity-90">🔍</span>
-                   <span title="Duo Security" className="text-[10px] text-green-400 font-black border border-green-400/30 px-1 rounded">DUO</span>
+            {/* Identity Box - UPDATED WITH ASSETS */}
+            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[55%] top-[-15px] ml-[160px] w-56 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+                <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-3">Identity & MFA</p>
+                <div className="flex gap-4 items-center h-5">
+                   <img src="/entraid.svg" alt="Entra" className="h-full w-auto opacity-80" />
+                   <img src="/google.svg" alt="Google" className="h-full w-auto opacity-80" />
+                   <img src="/duo.svg" alt="Duo" className="h-full w-auto opacity-80" />
                 </div>
-                <p className="text-[8px] text-white/70 mt-2 font-mono uppercase tracking-tighter">Auth Service Providers</p>
+                <p className="text-[8px] text-white/70 mt-3 font-mono uppercase tracking-tighter italic">Secured Entryway</p>
             </div>
             <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
           </div>
 
-          {/* Fasthosts - RESTORED LOGO */}
+          {/* Fasthosts */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
                <div className="h-6 flex items-center justify-center px-4">
@@ -140,12 +141,12 @@ export default function HomelabLanding() {
             <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
-          {/* Cloudflare + GitHub - COLLISION FIXED */}
+          {/* Cloudflare + GitHub - INCREASED OFFSET */}
           <div className="relative flex flex-col items-center">
             
-            <div className="hidden lg:block absolute right-[55%] top-8 w-[160px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
+            <div className="hidden lg:block absolute right-[55%] top-8 w-[200px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
             
-            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[160px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[200px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <div className="flex items-center gap-3 justify-center mb-1">
                    <span className="text-xl">🐙</span>
                    <span className="text-[10px] font-black text-white uppercase tracking-widest">GitHub Repo</span>
@@ -164,7 +165,7 @@ export default function HomelabLanding() {
             <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
 
-          {/* YouFibre - RESTORED LOGO */}
+          {/* YouFibre */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
                <div className="h-6 flex items-center justify-center px-4">
