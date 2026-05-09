@@ -149,7 +149,7 @@ export default function HomelabLanding() {
             <div className="hidden lg:block absolute right-[52%] top-8 w-[100px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
             
             {/* GitHub Box - REFINED AND CLOSER */}
-            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[100px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[52%] top-[-10px] mr-[100px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <div className="flex items-center gap-3 justify-center mb-1">
                    <span className="text-xl">🐙</span>
                    <span className="text-[10px] font-black text-white uppercase tracking-widest">GitHub Repo</span>
