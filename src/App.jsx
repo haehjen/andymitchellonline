@@ -56,7 +56,7 @@ const Sidebar = ({ isOpen, onClose, details }) => (
   </div>
 );
 
-// --- Content Data ---
+// --- Data Layer ---
 
 const componentData = {
   "Fasthosts Registrar": {
@@ -129,7 +129,7 @@ export default function HomelabLanding() {
         </p>
 
         {/* --- Central Flow Chain --- */}
-        <div className="relative mb-0 flex flex-col items-center">
+        <div className="relative flex flex-col items-center">
           
           {/* Public Internet */}
           <div className="flex flex-col items-center mb-0 relative">
@@ -141,8 +141,7 @@ export default function HomelabLanding() {
           {/* Fasthosts */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
-               {/* Placeholder for Fasthosts Logo */}
-               <div className="h-5 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity">
+               <div className="h-5 flex items-center justify-center">
                   <span className="text-white font-black tracking-tighter text-sm italic">FASTHOSTS</span>
                </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">Registrar</p>
@@ -153,7 +152,6 @@ export default function HomelabLanding() {
           {/* Cloudflare */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
-               {/* Placeholder for Cloudflare Logo */}
                <div className="h-5 flex items-center justify-center">
                   <span className="text-[#f38020] font-black tracking-tighter text-sm italic">CLOUDFLARE</span>
                </div>
@@ -165,7 +163,6 @@ export default function HomelabLanding() {
           {/* YouFibre */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
-               {/* Placeholder for YouFibre Logo */}
                <div className="h-5 flex items-center justify-center">
                   <span className="text-white font-black tracking-tighter text-sm italic">YOU<span className="text-red-600">FIBRE</span></span>
                </div>
@@ -174,27 +171,37 @@ export default function HomelabLanding() {
             <div className="w-px h-8 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
           </div>
 
-          {/* Nginx Hub (Uniform Width) */}
-          <div className="relative flex flex-col items-center">
+          {/* Nginx Hub (Standardized Width/Theme) */}
+          <div className="relative flex flex-col items-center mb-0">
             <div 
-              className="w-56 group relative cursor-pointer bg-white border border-white/20 py-6 rounded-xl transition-all hover:scale-105 shadow-[0_0_40px_rgba(16,185,129,0.1)]"
+              className="w-56 group relative cursor-pointer bg-white/5 border border-emerald-500/50 py-4 rounded-xl transition-all hover:scale-105"
               onClick={() => handleCardClick("Nginx Reverse Proxy")}
             >
-              <div className="text-[#009639] text-xl font-black leading-none uppercase italic">Nginx</div>
-              <p className="font-bold uppercase tracking-widest text-[9px] text-slate-900 mt-1">Reverse Proxy</p>
+              <div className="text-emerald-500 text-sm font-black leading-none uppercase italic">Nginx Proxy</div>
+              <p className="font-bold uppercase tracking-widest text-[8px] text-slate-500 mt-1">Central Routing</p>
             </div>
-            
-            {/* The "Bus Bar" Logic */}
-            <div className="w-px h-10 bg-emerald-500"></div>
-            <div className="w-[80%] h-px bg-emerald-500/50"></div>
-            <div className="flex justify-between w-[80%] px-[10%]">
-               {[1,2,3,4,5].map(i => <div key={i} className="w-px h-6 bg-emerald-500/30"></div>)}
-            </div>
+            {/* The Trunk Line */}
+            <div className="w-px h-8 bg-emerald-500"></div>
           </div>
         </div>
 
+        {/* --- Wide Bus Bar Section --- */}
+        <div className="relative w-full max-w-7xl mx-auto mb-4">
+           {/* Horizontal Bus Bar - spans from card 1 center to card 5 center */}
+           <div className="absolute top-0 left-[10%] right-[10%] h-px bg-emerald-500/50"></div>
+           
+           {/* Drop lines for the 5 cards */}
+           <div className="flex justify-between w-full px-[10%]">
+              <div className="w-px h-6 bg-emerald-500/50"></div>
+              <div className="w-px h-6 bg-emerald-500/50"></div>
+              <div className="w-px h-6 bg-emerald-500/50"></div>
+              <div className="w-px h-6 bg-emerald-500/50"></div>
+              <div className="w-px h-6 bg-emerald-500/50"></div>
+           </div>
+        </div>
+
         {/* Service Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20 mt-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20">
           <ServiceCard title="Minecraft" subtitle="Game Hosting" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
           <ServiceCard title="DayZ Server" subtitle="Game Hosting" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
           <ServiceCard title="Mitch AI" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
