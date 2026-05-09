@@ -51,26 +51,43 @@ const Sidebar = ({ isOpen, onClose, details }) => (
 
 // --- Extended Data Layer ---
 const componentData = {
-  "GitHub CI/CD": {
-    title: "GitHub",
-    subtitle: "Version Control & CI/CD",
+  "GitHub Source": {
+    title: "GitHub Organization",
+    subtitle: "Version Control Hub",
     icon: "🐙",
-    description: "Source of truth for Homelab OS. Pushes trigger automated builds via Cloudflare Pages.",
-    specs: ["Vite / React Source", "Actions Workflow", "Automated SSL"]
+    description: "Centralized repository management for the entire Homelab stack. Each service card below is backed by a dedicated repo for config, code, and deployment scripts.",
+    specs: ["Pidgiemon-Server Repo", "iAMLegendary-Config Repo", "MITCH-AI-Model Repo", "MitchMesh-Firmware Repo"]
   },
   "Identity Providers": {
     title: "Identity & MFA",
     subtitle: "Authentication Layer",
     icon: "🔑",
-    description: "Hybrid identity management syncing local Active Directory with Microsoft Entra ID. Features 2-way writeback and Duo MFA for RDS and admin access.",
+    description: "Hybrid identity management syncing local Active Directory with Microsoft Entra ID. Features 2-way writeback and Duo MFA.",
     specs: ["Duo Security 2FA", "Entra ID / AD Connect", "2-Way Writeback"]
   },
-  "Windows Domain": {
-    title: "Active Directory",
-    subtitle: "Hybrid RDS Farm",
-    icon: "🪟",
-    description: "Local Windows Domain Controller synced with Entra ID. Powers an RDS Session Host cluster serving RemoteApps secured by Duo MFA.",
-    specs: ["AD DS / Hybrid Sync", "RDS Gateway / Web", "Cisco Packet Tracer", "Notepad++ RemoteApp"]
+  "Minecraft Server": {
+    title: "Pidgiemon",
+    subtitle: "Minecraft VM",
+    description: "High-performance Minecraft instance. Configuration and custom plugins managed via GitHub.",
+    specs: ["Repo: pidgiemon-server", "ZFS Backed Storage", "Automated Backups"]
+  },
+  "DayZ Server": {
+    title: "iAMLegendary",
+    subtitle: "DayZ VM",
+    description: "Custom DayZ Standalone server. Mod lists and server configuration tracked in version control.",
+    specs: ["Repo: iamlegendary-config", "Custom Mod Support", "Performance Optimized"]
+  },
+  "Mitch AI": {
+    title: "M.I.T.C.H",
+    subtitle: "Local AI Model",
+    description: "Private LLM instance. Model training scripts and API integration code hosted on GitHub.",
+    specs: ["Repo: mitch-ai-core", "CUDA Enabled", "Private API"]
+  },
+  "Docker Containers": {
+    title: "MitchMesh",
+    subtitle: "LoRa Drone Network",
+    description: "Autonomous LoRa mesh network. Firmware for drone nodes and ground stations developed and versioned in GitHub.",
+    specs: ["Repo: mitchmesh-firmware", "LoRaWAN Protocol", "ESP32/Drones"]
   }
 };
 
@@ -122,7 +139,6 @@ export default function HomelabLanding() {
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             
             <div className="hidden lg:block absolute left-[55%] top-6 w-[200px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50"></div>
-            
             <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-[55%] top-[-15px] ml-[200px] w-56 text-left bg-white/5 border border-purple-500/40 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-3">Identity & MFA</p>
                 <div className="flex gap-4 items-center h-5">
@@ -139,32 +155,29 @@ export default function HomelabLanding() {
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
                <div className="h-6 flex items-center justify-center px-4">
-                  <img src="/fasthosts.svg" alt="Fasthosts" className="max-h-full max-w-[140px] brightness-0 invert group-hover:invert-0 group-hover:brightness-100 transition-all duration-300" 
-                       onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
-                  <span className="hidden text-white font-black tracking-tighter text-sm italic">FASTHOSTS</span>
+                  <img src="/fasthosts.svg" alt="Fasthosts" className="max-h-full max-w-[140px] brightness-0 invert group-hover:invert-0 group-hover:brightness-100 transition-all duration-300" />
                </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">Registrar</p>
             </div>
             <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
-          {/* Cloudflare + GitHub */}
+          {/* Cloudflare + Multi-Repo Branch */}
           <div className="relative flex flex-col items-center">
             <div className="hidden lg:block absolute right-[55%] top-8 w-[240px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50"></div>
             
-            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[240px] w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+            {/* GitHub Hub Box */}
+            <div onClick={() => handleCardClick("GitHub Source")} className="hidden lg:block absolute right-[55%] top-[-10px] mr-[240px] w-48 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
                 <div className="flex items-center gap-3 justify-center mb-1">
                    <span className="text-xl">🐙</span>
-                   <span className="text-[10px] font-black text-white uppercase tracking-widest">GitHub Repo</span>
+                   <span className="text-[10px] font-black text-white uppercase tracking-widest">Source Repos</span>
                 </div>
-                <p className="text-[8px] text-orange-400 font-mono uppercase tracking-widest font-bold">CI/CD Pipeline</p>
+                <p className="text-[7px] text-orange-400 font-mono uppercase tracking-[0.2em] font-bold">Version Control Hub</p>
             </div>
 
             <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
                <div className="h-6 flex items-center justify-center px-4">
-                  <img src="/cloudflare.svg" alt="Cloudflare" className="max-h-full max-w-[140px]" 
-                       onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
-                  <span className="hidden text-[#f38020] font-black tracking-tighter text-sm italic">CLOUDFLARE</span>
+                  <img src="/cloudflare.svg" alt="Cloudflare" className="max-h-full max-w-[140px]" />
                </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">DNS & WEBPAGE HOST</p>
             </div>
@@ -175,9 +188,7 @@ export default function HomelabLanding() {
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
                <div className="h-6 flex items-center justify-center px-4">
-                  <img src="/youfibre.png" alt="YouFibre" className="max-h-full max-w-[140px] grayscale group-hover:grayscale-0 transition-all duration-300 object-contain" 
-                       onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
-                  <span className="hidden text-white font-black tracking-tighter text-sm italic uppercase">YOUFIBRE</span>
+                  <img src="/youfibre.png" alt="YouFibre" className="max-h-full max-w-[140px] grayscale group-hover:grayscale-0 transition-all duration-300 object-contain" />
                </div>
                <p className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mt-1">Static IP <span className="text-red-500 font-bold italic">PAID</span></p>
             </div>
@@ -194,15 +205,20 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* --- Expanded Bus Bar (6 Way) --- */}
+        {/* --- Multi-Repo Bus Bar (Left Side) --- */}
         <div className="relative w-full max-w-7xl mx-auto mb-4">
+           {/* Primary Bus Bar (Grid Connections) */}
            <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40"></div>
+           
+           {/* GitHub Vertical Descent (Hidden line representing code flow to all cards) */}
+           <div className="hidden lg:block absolute top-[-100px] left-[5%] w-[3%] h-[100px] border-l border-b border-orange-500/20 rounded-bl-2xl"></div>
+           
            <div className="flex justify-between w-full px-[8%]">
               {[...Array(6)].map((_, i) => <div key={i} className="w-px h-6 bg-emerald-500/40"></div>)}
            </div>
         </div>
 
-        {/* --- Service Grid (Updated to 6 Cards) --- */}
+        {/* --- Service Grid --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative z-20">
           <ServiceCard title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
           <ServiceCard title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
@@ -224,9 +240,9 @@ export default function HomelabLanding() {
               <p className="text-slate-500 text-xs uppercase tracking-wider font-semibold opacity-70">High Availability • ZFS Storage • 24/7 Virtualization</p>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              <ProxmoxNode nodeName="Mcgregor" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
-              <ProxmoxNode nodeName="Pereira" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
-              <ProxmoxNode nodeName="Strickland" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
+              <ProxmoxNode nodeName="Node 1" status="Online" onClick={() => handleCardClick("Node 1 Details")} />
+              <ProxmoxNode nodeName="Node 2" status="Online" onClick={() => handleCardClick("Node 2 Details")} />
+              <ProxmoxNode nodeName="Node 3" status="Online" onClick={() => handleCardClick("Node 3 Details")} />
             </div>
             <div className="group bg-blue-600/10 border border-blue-500/20 p-5 rounded-2xl text-center min-w-[140px] transition-all hover:bg-blue-600/20 cursor-pointer" onClick={() => handleCardClick("Storage Pool")}>
               <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">🛢️</div>
