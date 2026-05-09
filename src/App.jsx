@@ -55,7 +55,7 @@ export default function HomelabLanding() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleCardClick = (name, details) => {
-    setSelectedComponent(details || { title: name, subtitle: "Infrastructure Component", description: "Details managed via Proxmox and AD Hybrid Sync." });
+    setSelectedComponent(details || { title: name, subtitle: "Infrastructure Component", description: "Details managed via Proxmox." });
     setIsSidebarOpen(true);
   };
 
@@ -68,7 +68,7 @@ export default function HomelabLanding() {
       <nav className="flex justify-center px-8 py-6 max-w-7xl mx-auto relative z-10">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg">🏠</div>
-          <span className="font-bold text-white tracking-tighter text-xl">Homelab OS</span>
+          <span className="font-bold text-white tracking-tighter text-xl text-center">Homelab OS</span>
         </div>
       </nav>
 
@@ -111,9 +111,8 @@ export default function HomelabLanding() {
             </div>
             <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
             
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center">
-               <img src="/youfibre.png" alt="YouFibre" className="h-4 mx-auto grayscale" />
-               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest mt-2">ISP Infrastructure</p>
+            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center font-black uppercase text-[10px] text-white tracking-widest">
+               ISP INFRASTRUCTURE
             </div>
             <div className="w-px h-10 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
 
@@ -146,14 +145,15 @@ export default function HomelabLanding() {
                 </div>
                 {/* Green Line to ZFS */}
                 <div className="absolute top-1/2 right-0 w-[50px] h-px bg-emerald-500/40 translate-x-full"></div>
-                <div className="absolute top-1/2 right-0 w-px h-[640px] bg-emerald-500/40 translate-x-[50px]"></div>
+                <div className="absolute top-1/2 right-0 w-px h-[660px] bg-emerald-500/40 translate-x-[50px]"></div>
             </div>
           </div>
         </div>
 
-        {/* --- GREEN CONNECTIVITY BUS (ABOVE CARDS) --- */}
+        {/* --- GREEN CONNECTIVITY BUS (TOP HORIZONTAL) --- */}
         <div className="relative w-full max-w-6xl mx-auto h-12 mb-2">
-           <div className="absolute bottom-0 left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
+           {/* Horizontal Bar AT THE TOP */}
+           <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
            <div className="grid grid-cols-6 h-full px-4">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-center relative">
@@ -167,20 +167,24 @@ export default function HomelabLanding() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative z-20">
           <ServiceCard hasRepo title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" />
           <ServiceCard hasRepo title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" />
+          
           <div className="relative flex flex-col items-center">
             <ServiceCard title="Active Directory" subtitle="Hybrid Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" />
-            <div className="absolute top-[100%] w-px h-12 bg-red-500/50 z-0">
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 border border-red-500/30 rounded uppercase tracking-tighter">SSO</div>
+            {/* Extended Red SSO Connector Down to Footer */}
+            <div className="absolute top-[100%] w-px h-[250px] bg-red-500/40 z-0">
+               <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 border border-red-500/30 rounded uppercase">SSO</div>
             </div>
           </div>
+
           <ServiceCard hasRepo title="M.I.T.C.H" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" />
           <ServiceCard title="FileBrowser" subtitle="Public Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" />
           <ServiceCard hasRepo title="MitchMesh" subtitle="LoRa Drone" port="Isolated" icon="📡" colorClass="bg-cyan-500" />
         </div>
 
-        {/* --- ORANGE REPO BUS (BELOW CARDS) --- */}
+        {/* --- ORANGE REPO BUS (BOTTOM HORIZONTAL) --- */}
         <div className="relative w-full max-w-6xl mx-auto h-12 mb-16">
-           <div className="absolute top-0 left-[5%] right-[10%] h-px bg-orange-500/40 z-0"></div>
+           {/* Horizontal Bar AT THE BOTTOM */}
+           <div className="absolute bottom-0 left-[5%] right-[10%] h-px bg-orange-500/40 z-0"></div>
            <div className="grid grid-cols-6 h-full px-4">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-center relative">
@@ -204,7 +208,13 @@ export default function HomelabLanding() {
             </div>
 
             <div className="flex items-center gap-8">
-               <div className="bg-red-500/5 border border-red-500/20 px-6 py-4 rounded-3xl text-center"><div className="text-xl mb-1">🔐</div><p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p></div>
+               {/* Red SSO Line Lands Here */}
+               <div className="bg-red-500/10 border border-red-500/40 px-6 py-4 rounded-3xl text-center relative">
+                  <div className="text-xl mb-1">🔐</div>
+                  <p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p>
+                  {/* Visual Connector point from top */}
+                  <div className="absolute top-0 left-1/2 w-px h-4 bg-red-500/40 -translate-y-full"></div>
+               </div>
                <div className="flex gap-4">
                  <ProxmoxNode nodeName="Node 1" status="Online" />
                  <ProxmoxNode nodeName="Node 2" status="Online" />
