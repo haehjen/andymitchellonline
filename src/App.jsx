@@ -81,21 +81,21 @@ export default function HomelabLanding() {
         {/* --- Top Logic Layer --- */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative max-w-6xl mx-auto mb-16">
           
-          {/* LEFT: SOURCE REPOS */}
+          {/* SOURCE REPOS (Left Column) */}
           <div className="relative flex flex-col items-center pt-24">
-            <div onClick={() => handleCardClick("GitHub Source", { title: "Source Repos", subtitle: "GitHub Organization", icon: "🐙", description: "All code and configs stored here.", specs: ["Pidgiemon", "iAMLegendary", "MITCH", "MitchMesh"] })} 
+            <div onClick={() => handleCardClick("GitHub Source", { title: "Source Repos", subtitle: "GitHub Organization", icon: "🐙", description: "Version control for all lab configs.", specs: ["Pidgiemon", "iAMLegendary", "MITCH", "MitchMesh"] })} 
                  className="w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 cursor-pointer z-20 text-center relative">
                 <div className="font-black text-white text-[10px]">🐙 SOURCE REPOS</div>
                 <p className="text-[7px] text-orange-400 font-mono uppercase tracking-widest font-bold mt-1">Version Control Hub</p>
-                {/* Vertical Orange Line Start (Down to Top Bus) */}
+                {/* Vertical Orange Line down to Orange Bus */}
                 <div className="absolute top-1/2 left-0 w-px h-[400px] bg-orange-500/40 -translate-x-10"></div>
                 <div className="absolute top-1/2 left-0 w-10 h-px bg-orange-500/40 -translate-x-10"></div>
             </div>
           </div>
 
-          {/* CENTER: TRAFFIC FLOW */}
+          {/* TRAFFIC (Center Column) */}
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl">🌐</div>
+            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
             
@@ -108,13 +108,13 @@ export default function HomelabLanding() {
             <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4"><img src="/youfibre.png" alt="YouFibre" className="h-4 mx-auto grayscale" /></div>
             <div className="w-px h-10 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
 
-            <div className="w-56 bg-white/5 border border-emerald-500/50 py-4 rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+            <div className="w-56 bg-white/5 border border-emerald-500/50 py-4 rounded-xl">
               <div className="text-emerald-500 text-sm font-black leading-none uppercase italic">Nginx Proxy</div>
               <p className="font-bold uppercase tracking-widest text-[8px] text-slate-500 mt-1">Central Routing</p>
             </div>
           </div>
 
-          {/* RIGHT: IDENTITY & PRODUCTIVITY */}
+          {/* IDENTITY & PRODUCTIVITY (Right Column) */}
           <div className="relative flex flex-col items-center pt-4 space-y-6">
             <div className="w-64 bg-white/5 border border-purple-500/40 p-4 rounded-3xl text-left">
                 <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-3">Identity & MFA</p>
@@ -123,28 +123,26 @@ export default function HomelabLanding() {
                    <img src="/google.svg" alt="Google" className="h-full opacity-80" />
                    <img src="/duo.svg" alt="Duo" className="h-full opacity-80" />
                 </div>
+                <div className="w-px h-6 bg-purple-500/30 mx-auto mt-4 mb-0"></div>
             </div>
 
-            {/* Line to Productivity */}
-            <div className="w-px h-6 bg-purple-500/30"></div>
-
             <div onClick={() => handleCardClick("Productivity", { title: "Productivity", subtitle: "Cloud Workspace", icon: "💼", description: "Google and M365 suites synced for local ZFS backups.", specs: ["Google Workspace & GDrive", "M365 & OneDrive"] })}
-                 className="w-64 bg-white/5 border border-blue-500/40 p-4 rounded-xl text-left hover:bg-white/10 cursor-pointer relative">
+                 className="w-64 bg-white/5 border border-blue-500/40 p-4 rounded-xl text-left hover:bg-white/10 cursor-pointer relative group">
                 <p className="text-[9px] font-black uppercase text-blue-400 tracking-[0.2em] mb-2">Productivity</p>
                 <div className="text-[9px] font-bold text-white/90 space-y-1 font-mono uppercase tracking-tighter">
                    <div>Google Workspace & GDrive</div>
                    <div>M365 & OneDrive</div>
                 </div>
-                {/* Vertical Emerald Line down to Bottom Bus */}
+                {/* Vertical Green Line down to Bottom Bus */}
                 <div className="absolute top-1/2 right-0 w-[40px] h-px bg-emerald-500/40 translate-x-full"></div>
                 <div className="absolute top-1/2 right-0 w-px h-[650px] bg-emerald-500/40 translate-x-[40px]"></div>
             </div>
           </div>
         </div>
 
-        {/* --- ORANGE REPO BUS (NOW ABOVE CARDS) --- */}
+        {/* --- ORANGE REPO BUS (TOP - DROPPING DOWN) --- */}
         <div className="relative w-full max-w-6xl mx-auto h-12 mb-2">
-           <div className="absolute bottom-0 left-[5%] right-[10%] h-px bg-orange-500/40 z-0"></div>
+           <div className="absolute top-0 left-[5%] right-[10%] h-px bg-orange-500/40 z-0"></div>
            <div className="grid grid-cols-6 h-full px-4">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-center relative">
@@ -169,9 +167,9 @@ export default function HomelabLanding() {
           <ServiceCard hasRepo title="MitchMesh" subtitle="LoRa Drone" port="Isolated" icon="📡" colorClass="bg-cyan-500" />
         </div>
 
-        {/* --- GREEN CONNECTIVITY BUS (NOW BELOW CARDS) --- */}
+        {/* --- GREEN CONNECTIVITY BUS (BOTTOM - REACHING UP) --- */}
         <div className="relative w-full max-w-6xl mx-auto h-12 mb-12">
-           <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
+           <div className="absolute bottom-0 left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
            <div className="grid grid-cols-6 h-full px-4">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-center relative">
@@ -200,7 +198,7 @@ export default function HomelabLanding() {
               <div className="text-2xl mb-1">🛢️</div>
               <p className="text-white font-bold text-xs uppercase tracking-tighter">ZFS STORAGE</p>
               <p className="text-emerald-400 text-[10px] font-bold italic mt-1">Backup Sync Active</p>
-              {/* Landing Point for Bottom Emerald Bus / Productivity Line */}
+              {/* Green Line Landing Point */}
               <div className="absolute top-1/2 right-0 w-[40px] h-px bg-emerald-500/40 translate-x-full"></div>
             </div>
           </div>
