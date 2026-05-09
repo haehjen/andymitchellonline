@@ -209,9 +209,9 @@ export default function HomelabLanding() {
 
         {/* Service Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20">
-          <ServiceCard title="Minecraft" subtitle="Game Hosting" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
-          <ServiceCard title="DayZ Server" subtitle="Game Hosting" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
-          <ServiceCard title="Mitch AI" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
+          <ServiceCard title="Minecraft" subtitle="PidgieMon Custom Modpack" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
+          <ServiceCard title="DayZ Server" subtitle="Custom DayZ Server" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
+          <ServiceCard title="M.I.T.C.H" subtitle="SelfHosted AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
           <ServiceCard title="FileShare" subtitle="Public SelfHosted FileShare" port="Port: 5000" icon="🏠" colorClass="bg-blue-400" onClick={() => handleCardClick("FileShare")} />
           <ServiceCard title="Mitch Mesh" subtitle="Autonomous LoRa Network" port="Isolated" icon="🕸️" colorClass="bg-cyan-500" onClick={() => handleCardClick("Docker Containers")} />
         </div>
