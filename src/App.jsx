@@ -67,7 +67,7 @@ export default function HomelabLanding() {
 
       <nav className="flex justify-center px-8 py-6 max-w-7xl mx-auto relative z-10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg text-center">🏠</div>
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg">🏠</div>
           <span className="font-bold text-white tracking-tighter text-xl">Homelab OS</span>
         </div>
       </nav>
@@ -78,50 +78,42 @@ export default function HomelabLanding() {
           <p className="text-slate-500 text-[10px] uppercase font-bold tracking-[0.4em]">Endless Possibilities</p>
         </div>
 
-        {/* --- Top Logic Layer --- */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative max-w-6xl mx-auto mb-16">
-          
-          {/* Source Repos (Left) */}
           <div className="relative flex flex-col items-center pt-24">
-            <div onClick={() => handleCardClick("Source Repos", { title: "GitHub Organization", icon: "🐙", specs: ["Pidgiemon", "iAMLegendary", "MITCH Core", "MitchMesh Firmware"] })} 
+            <div onClick={() => handleCardClick("Source Repos", { title: "GitHub Organization", subtitle: "Version Control Hub", icon: "🐙", specs: ["Pidgiemon", "iAMLegendary", "MITCH Core", "MitchMesh Firmware"] })} 
                  className="w-48 bg-white/5 border border-orange-500/30 p-5 rounded-2xl hover:bg-white/10 cursor-pointer z-20 text-center relative">
                 <div className="font-black text-white text-[10px] uppercase">🐙 Source Repos</div>
                 <p className="text-[7px] text-orange-400 font-mono uppercase tracking-[0.2em] font-black mt-2">Version Control Hub</p>
-                
-                {/* Vertical Trunk to Orange Bus (Corrected Alignment) */}
-                <div className="absolute top-1/2 left-0 w-px h-[600px] bg-orange-500/40 -translate-x-12"></div>
+                <div className="absolute top-1/2 left-0 w-px h-[610px] bg-orange-500/40 -translate-x-12"></div>
                 <div className="absolute top-1/2 left-0 w-12 h-px bg-orange-500/40 -translate-x-12"></div>
             </div>
           </div>
 
-          {/* Traffic Column (Center) */}
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
-            
             <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center">
                <img src="/fasthosts.svg" alt="Fasthosts" className="h-4 mx-auto brightness-0 invert" />
+               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest mt-2">Registrar</p>
             </div>
             <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
-            
             <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center">
                <img src="/cloudflare.svg" alt="Cloudflare" className="h-4 mx-auto" />
+               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest mt-2">DNS & Webpage Host</p>
             </div>
             <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
-            
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center font-black uppercase text-[10px] text-white tracking-widest leading-none flex items-center justify-center h-[50px]">
-               ISP INFRASTRUCTURE
+            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center h-[60px] flex flex-col justify-center">
+               <img src="/youfibre.png" alt="YouFibre" className="h-4 mx-auto grayscale mb-1" />
+               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest">ISP Infrastructure</p>
             </div>
             <div className="w-px h-10 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
-
             <div className="w-56 bg-white/5 border border-emerald-500/50 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.1)]">
               <div className="text-emerald-500 text-sm font-black leading-none uppercase italic">Nginx Proxy</div>
               <p className="font-bold uppercase tracking-[0.2em] text-[8px] text-slate-500 mt-2">Central Routing</p>
             </div>
           </div>
 
-          {/* Identity & Productivity (Right) */}
           <div className="relative flex flex-col items-center pt-4 space-y-8">
             <div className="w-64 bg-white/5 border border-purple-500/40 p-5 rounded-3xl text-left">
                 <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-4">Identity & MFA</p>
@@ -131,81 +123,64 @@ export default function HomelabLanding() {
                    <img src="/duo.svg" alt="Duo" className="h-full opacity-80" />
                 </div>
             </div>
-
             <div className="w-px h-8 bg-purple-500/30"></div>
-
-            <div onClick={() => handleCardClick("Productivity", { title: "Productivity", specs: ["Google Workspace & GDrive", "M365 & OneDrive"] })}
+            <div onClick={() => handleCardClick("Productivity", { title: "Productivity", subtitle: "Enterprise Cloud Sync", specs: ["Google Workspace & GDrive", "M365 & OneDrive"] })}
                  className="w-64 bg-white/5 border border-blue-500/40 p-5 rounded-2xl text-left hover:bg-white/10 cursor-pointer relative group">
                 <p className="text-[9px] font-black uppercase text-blue-400 tracking-[0.2em] mb-3 text-center">Productivity</p>
                 <div className="text-[9px] font-bold text-white/90 space-y-2 font-mono uppercase tracking-tighter text-center">
                    <div>Google Workspace & GDrive</div>
                    <div>M365 & OneDrive</div>
                 </div>
-                {/* Green Backup Line Trunk */}
                 <div className="absolute top-1/2 right-0 w-[55px] h-px bg-emerald-500/40 translate-x-full"></div>
-                <div className="absolute top-1/2 right-0 w-px h-[660px] bg-emerald-500/40 translate-x-[55px]"></div>
+                <div className="absolute top-1/2 right-0 w-px h-[680px] bg-emerald-500/40 translate-x-[55px]"></div>
             </div>
           </div>
         </div>
 
-        {/* --- GREEN CONNECTIVITY BUS (TOP HORIZONTAL) --- */}
         <div className="relative w-full max-w-6xl mx-auto h-12 mb-2">
            <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
            <div className="grid grid-cols-6 h-full px-4">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="flex justify-center relative">
-                   <div className="w-px h-full bg-emerald-500/40"></div>
-                </div>
+                <div key={i} className="flex justify-center relative"><div className="w-px h-full bg-emerald-500/40"></div></div>
               ))}
            </div>
         </div>
 
-        {/* --- SERVICE GRID --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative z-20">
           <ServiceCard hasRepo title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" />
           <ServiceCard hasRepo title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" />
-          
           <div className="relative flex flex-col items-center">
             <ServiceCard title="Active Directory" subtitle="Hybrid Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" />
-            {/* Extended Red SSO Connector Down to Footer */}
             <div className="absolute top-[100%] w-px h-[250px] bg-red-500/40 z-0">
                <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 border border-red-500/30 rounded uppercase tracking-tighter">SSO</div>
             </div>
           </div>
-
           <ServiceCard hasRepo title="M.I.T.C.H" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" />
           <ServiceCard title="FileBrowser" subtitle="Public Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" />
           <ServiceCard hasRepo title="MitchMesh" subtitle="LoRa Drone" port="Isolated" icon="📡" colorClass="bg-cyan-500" />
         </div>
 
-        {/* --- ORANGE REPO BUS (BOTTOM HORIZONTAL - CORRECTED WIDTH) --- */}
         <div className="relative w-full max-w-6xl mx-auto h-12 mb-16">
-           {/* Line starts from left vertical trunk (roughly 4% left) to the end of last card */}
            <div className="absolute bottom-0 left-[4%] right-[10%] h-px bg-orange-500/40 z-0"></div>
            <div className="grid grid-cols-6 h-full px-4">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-center relative">
-                   { (i === 0 || i === 1 || i === 3 || i === 5) && 
-                     <div className="w-px h-full bg-orange-500/40"></div>
-                   }
+                   { (i === 0 || i === 1 || i === 3 || i === 5) && <div className="w-px h-full bg-orange-500/40"></div> }
                 </div>
               ))}
            </div>
         </div>
 
-        {/* --- HARDWARE FOOTER --- */}
         <div className="p-10 border border-white/10 rounded-[3rem] bg-gradient-to-b from-white/[0.03] to-transparent relative mt-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="text-left max-w-xs">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-orange-500 font-black text-2xl">X</span>
-                <h2 className="text-xl font-bold text-white tracking-tight uppercase text-center">Proxmox Cluster</h2>
+                <h2 className="text-xl font-bold text-white tracking-tight uppercase">Proxmox Cluster</h2>
               </div>
               <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black opacity-70">HA • ZFS • Cloud Backup</p>
             </div>
-
             <div className="flex items-center gap-8">
-               {/* Red SSO Line Lands Here */}
                <div className="bg-red-500/10 border border-red-500/40 px-6 py-4 rounded-3xl text-center relative">
                   <div className="text-xl mb-1">🔐</div>
                   <p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p>
@@ -217,14 +192,32 @@ export default function HomelabLanding() {
                  <ProxmoxNode nodeName="Node 3" status="Online" />
                </div>
             </div>
-
             <div className="group bg-emerald-500/10 border border-emerald-500/20 p-8 rounded-3xl text-center min-w-[180px] relative">
               <div className="text-2xl mb-1">🛢️</div>
               <p className="text-white font-bold text-xs uppercase tracking-tighter">ZFS STORAGE</p>
               <p className="text-emerald-400 text-[10px] font-bold italic mt-2">Sync Active</p>
-              {/* Corrected Landing Point - Removed the extra tail you circled */}
               <div className="absolute top-1/2 right-0 w-[55px] h-px bg-emerald-500/40 translate-x-full"></div>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-12 max-w-5xl mx-auto pt-8 border-t border-white/5">
+          <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-slate-500 mb-8">The Connection Journey</h3>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative">
+            <div className="hidden md:block absolute top-6 left-0 w-full h-px bg-gradient-to-r from-blue-500/10 via-emerald-500/40 to-blue-500/10"></div>
+            {[
+              { step: "01", label: "DNS Lookup", desc: "andymitchell.online", color: "text-blue-400" },
+              { step: "02", label: "WAF Filter", desc: "Cloudflare Edge", color: "text-orange-400" },
+              { step: "03", label: "ISP Entry", desc: "YouFibre Static IP", color: "text-red-400" },
+              { step: "04", label: "Routing", desc: "Nginx SSL Handoff", color: "text-emerald-400" },
+              { step: "05", label: "Service", desc: "Proxmox VM/LXC", color: "text-blue-400" }
+            ].map((item, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center group flex-1">
+                <div className={`w-12 h-12 rounded-full bg-[#020617] border border-white/20 flex items-center justify-center text-[11px] font-black mb-3 group-hover:border-white/50 transition-all ${item.color} shadow-lg`}>{item.step}</div>
+                <p className="text-white font-bold text-sm mb-1 uppercase tracking-tight">{item.label}</p>
+                <p className="text-[10px] text-slate-500 font-mono italic uppercase tracking-tighter whitespace-nowrap">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </main>
