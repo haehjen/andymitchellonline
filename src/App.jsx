@@ -241,6 +241,32 @@ export default function HomelabLanding() {
             </div>
           </div>
         </div>
+
+        {/* 6. Connection Journey Footer */}
+<div className="mt-24 max-w-4xl mx-auto pt-12 border-t border-white/5">
+  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-12">The Connection Journey</h3>
+  <div className="flex flex-col md:flex-row justify-between items-center gap-8 relative">
+    
+    {/* Connecting Line (Desktop) */}
+    <div className="hidden md:block absolute top-5 left-0 w-full h-px bg-gradient-to-r from-blue-500/20 via-emerald-500/50 to-blue-500/20"></div>
+
+    {[
+      { step: "01", label: "DNS Lookup", desc: "andymitchell.online", color: "text-blue-400" },
+      { step: "02", label: "WAF Filter", desc: "Cloudflare Edge", color: "text-orange-400" },
+      { step: "03", label: "Entry", desc: "YouFibre Static IP", color: "text-red-400" },
+      { step: "04", label: "Routing", desc: "Nginx SSL Handoff", color: "text-emerald-400" },
+      { step: "05", label: "Service", desc: "Proxmox VM/LXC", color: "text-blue-400" }
+    ].map((item, i) => (
+      <div key={i} className="relative z-10 flex flex-col items-center group">
+        <div className={`w-10 h-10 rounded-full bg-[#020617] border border-white/10 flex items-center justify-center text-[10px] font-black mb-4 group-hover:border-white/40 transition-colors ${item.color}`}>
+          {item.step}
+        </div>
+        <p className="text-white font-bold text-xs mb-1 uppercase tracking-tight">{item.label}</p>
+        <p className="text-[9px] text-slate-500 font-mono italic uppercase">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</div>
       </main>
     </div>
   );
