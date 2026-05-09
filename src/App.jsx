@@ -5,10 +5,10 @@ const ServiceCard = ({ title, subtitle, port, icon, colorClass, onClick, hasRepo
   <div onClick={onClick} className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 cursor-pointer overflow-hidden h-full">
     {hasRepo && <div className="absolute top-3 left-3 w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)] z-30"></div>}
     <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 blur-xl transition-opacity ${colorClass}`}></div>
-    <div className="relative z-10">
+    <div className="relative z-10 text-center">
       <div className="text-3xl mb-4 transition-transform duration-300 group-hover:scale-110">{icon}</div>
-      <h3 className="font-bold text-white tracking-tight text-sm">{title}</h3>
-      <p className="text-slate-500 text-[10px] mb-2 uppercase tracking-widest">{subtitle}</p>
+      <h3 className="font-bold text-white tracking-tight text-sm uppercase">{title}</h3>
+      <p className="text-slate-500 text-[10px] mb-2 uppercase tracking-[0.2em] font-black">{subtitle}</p>
       <p className={`text-[10px] font-mono font-bold ${colorClass.replace("bg-", "text-")}`}>{port}</p>
     </div>
   </div>
@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose, details }) => (
     <button onClick={onClose} className="absolute top-4 right-4 text-slate-500 hover:text-white text-xl">✕</button>
     <div className="mt-8 text-left">
       <div className="text-4xl mb-4">{details?.icon || '⚙️'}</div>
-      <h2 className="text-2xl font-bold text-white mb-2">{details?.title}</h2>
+      <h2 className="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">{details?.title}</h2>
       <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">{details?.subtitle}</p>
       <div className="space-y-4 text-sm border-t border-white/5 pt-6">
         <p className="text-slate-400 leading-relaxed">{details?.description}</p>
@@ -55,7 +55,7 @@ export default function HomelabLanding() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleCardClick = (name, details) => {
-    setSelectedComponent(details || { title: name, description: "System component." });
+    setSelectedComponent(details || { title: name, subtitle: "Infrastructure Component", description: "Details managed via Proxmox and AD Hybrid Sync." });
     setIsSidebarOpen(true);
   };
 
@@ -68,7 +68,7 @@ export default function HomelabLanding() {
       <nav className="flex justify-center px-8 py-6 max-w-7xl mx-auto relative z-10">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg">🏠</div>
-          <span className="font-bold text-white tracking-tighter text-xl text-center">Homelab OS</span>
+          <span className="font-bold text-white tracking-tighter text-xl">Homelab OS</span>
         </div>
       </nav>
 
@@ -81,79 +81,84 @@ export default function HomelabLanding() {
         {/* --- Top Logic Layer --- */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative max-w-6xl mx-auto mb-16">
           
-          {/* Source Repos (Left Column) */}
+          {/* GitHub Source (Left) */}
           <div className="relative flex flex-col items-center pt-24">
-            <div onClick={() => handleCardClick("GitHub Source", { title: "Source Repos", subtitle: "GitHub Organization", icon: "🐙", description: "Version control for all lab configs.", specs: ["Pidgiemon", "iAMLegendary", "MITCH", "MitchMesh"] })} 
-                 className="w-44 bg-white/5 border border-orange-500/30 p-4 rounded-xl hover:bg-white/10 cursor-pointer z-20 text-center relative">
-                <div className="font-black text-white text-[10px]">🐙 SOURCE REPOS</div>
-                <p className="text-[7px] text-orange-400 font-mono uppercase tracking-widest font-bold mt-1">Version Control Hub</p>
+            <div onClick={() => handleCardClick("Source Repos", { title: "GitHub Organization", subtitle: "Version Control Hub", icon: "🐙", description: "Multi-repo management for the entire lab.", specs: ["Pidgiemon", "iAMLegendary", "MITCH Core", "MitchMesh Firmware"] })} 
+                 className="w-48 bg-white/5 border border-orange-500/30 p-5 rounded-2xl hover:bg-white/10 cursor-pointer z-20 text-center relative">
+                <div className="font-black text-white text-[10px] uppercase">🐙 Source Repos</div>
+                <p className="text-[7px] text-orange-400 font-mono uppercase tracking-[0.2em] font-black mt-2">Version Control Hub</p>
                 {/* Vertical Orange Line down to Bottom Bus */}
                 <div className="absolute top-1/2 left-0 w-px h-[600px] bg-orange-500/40 -translate-x-10"></div>
                 <div className="absolute top-1/2 left-0 w-10 h-px bg-orange-500/40 -translate-x-10"></div>
             </div>
           </div>
 
-          {/* Traffic Column (Center) */}
+          {/* Network Column (Center) */}
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
+            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
             <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
             
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4"><img src="/fasthosts.svg" alt="Fasthosts" className="h-4 mx-auto brightness-0 invert" /></div>
+            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center">
+               <img src="/fasthosts.svg" alt="Fasthosts" className="h-4 mx-auto brightness-0 invert" />
+               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest mt-2">Registrar</p>
+            </div>
             <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
             
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4"><img src="/cloudflare.svg" alt="Cloudflare" className="h-4 mx-auto" /></div>
+            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center">
+               <img src="/cloudflare.svg" alt="Cloudflare" className="h-4 mx-auto" />
+               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest mt-2">DNS & Webpage Host</p>
+            </div>
             <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
             
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4"><img src="/youfibre.png" alt="YouFibre" className="h-4 mx-auto grayscale" /></div>
+            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 text-center">
+               <img src="/youfibre.png" alt="YouFibre" className="h-4 mx-auto grayscale" />
+               <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest mt-2">ISP Infrastructure</p>
+            </div>
             <div className="w-px h-10 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
 
-            <div className="w-56 bg-white/5 border border-emerald-500/50 py-4 rounded-xl">
+            <div className="w-56 bg-white/5 border border-emerald-500/50 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.1)]">
               <div className="text-emerald-500 text-sm font-black leading-none uppercase italic">Nginx Proxy</div>
-              <p className="font-bold uppercase tracking-widest text-[8px] text-slate-500 mt-1">Central Routing</p>
+              <p className="font-bold uppercase tracking-[0.2em] text-[8px] text-slate-500 mt-2">Central Routing</p>
             </div>
           </div>
 
-          {/* Identity & Productivity Column (Right) */}
-          <div className="relative flex flex-col items-center pt-4 space-y-6">
-            <div className="w-64 bg-white/5 border border-purple-500/40 p-4 rounded-3xl text-left">
-                <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-3">Identity & MFA</p>
+          {/* Identity Column (Right) */}
+          <div className="relative flex flex-col items-center pt-4 space-y-8">
+            <div onClick={() => handleCardClick("Identity Hub", { title: "Identity & MFA", subtitle: "Authentication Hub", icon: "🔑", description: "Hybrid management for all access." })} 
+                 className="w-64 bg-white/5 border border-purple-500/40 p-5 rounded-3xl text-left cursor-pointer">
+                <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-4">Identity & MFA</p>
                 <div className="flex gap-4 items-center h-5">
                    <img src="/entraid.svg" alt="Entra" className="h-full opacity-80" />
                    <img src="/google.svg" alt="Google" className="h-full opacity-80" />
                    <img src="/duo.svg" alt="Duo" className="h-full opacity-80" />
                 </div>
-                <div className="w-px h-6 bg-purple-500/30 mx-auto mt-4 mb-0"></div>
             </div>
 
-            <div onClick={() => handleCardClick("Productivity", { title: "Productivity", subtitle: "Cloud Workspace", icon: "💼", description: "Google and M365 suites synced for local ZFS backups.", specs: ["Google Workspace & GDrive", "M365 & OneDrive"] })}
-                 className="w-64 bg-white/5 border border-blue-500/40 p-4 rounded-xl text-left hover:bg-white/10 cursor-pointer relative group">
-                <p className="text-[9px] font-black uppercase text-blue-400 tracking-[0.2em] mb-2">Productivity</p>
-                <div className="text-[9px] font-bold text-white/90 space-y-1 font-mono uppercase tracking-tighter">
+            <div className="w-px h-8 bg-purple-500/30"></div>
+
+            <div onClick={() => handleCardClick("Productivity", { title: "Productivity", subtitle: "Enterprise Cloud Sync", icon: "💼", description: "GDrive and OneDrive syncing to local ZFS.", specs: ["Google Workspace & GDrive", "M365 & OneDrive"] })}
+                 className="w-64 bg-white/5 border border-blue-500/40 p-5 rounded-2xl text-left hover:bg-white/10 cursor-pointer relative">
+                <p className="text-[9px] font-black uppercase text-blue-400 tracking-[0.2em] mb-3">Productivity</p>
+                <div className="text-[9px] font-bold text-white/90 space-y-2 font-mono uppercase tracking-tighter">
                    <div>Google Workspace & GDrive</div>
                    <div>M365 & OneDrive</div>
                 </div>
-                {/* Vertical Green Line down to ZFS */}
+                {/* Green Line to ZFS */}
                 <div className="absolute top-1/2 right-0 w-[50px] h-px bg-emerald-500/40 translate-x-full"></div>
-                <div className="absolute top-1/2 right-0 w-px h-[450px] bg-emerald-500/40 translate-x-[50px]"></div>
+                <div className="absolute top-1/2 right-0 w-px h-[640px] bg-emerald-500/40 translate-x-[50px]"></div>
             </div>
           </div>
         </div>
 
-        {/* --- DUAL BUS BARS RESTORED AND ALIGNED --- */}
-        <div className="relative w-full max-w-7xl mx-auto h-20 mb-4 z-0">
-           
-           {/* EMERALD SERVICE BUS (TOP - Central Flow) */}
-           <div className="absolute top-[30px] left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
-           <div className="flex justify-between w-full px-[8%] relative z-0">
-              {[...Array(6)].map((_, i) => <div key={i} className="w-px h-8 bg-emerald-500/40 relative top-[30px]"></div>)}
-           </div>
-
-           {/* ORANGE REPO BUS (BOTTOM - Fed from Left Side) */}
-           <div className="absolute top-[60px] left-[5%] right-[10%] h-px bg-orange-500/40 z-0"></div>
-           <div className="flex justify-between w-full px-[8%] relative">
-              {[0, 1, 3, 5].map((i) => (
-                <div key={i} className="absolute w-px h-8 bg-orange-500/40 top-[60px]" style={{ left: `${8.5 + (i * 16.6)}%` }}></div>
+        {/* --- GREEN CONNECTIVITY BUS (ABOVE CARDS) --- */}
+        <div className="relative w-full max-w-6xl mx-auto h-12 mb-2">
+           <div className="absolute bottom-0 left-[8%] right-[8%] h-px bg-emerald-500/40 z-0"></div>
+           <div className="grid grid-cols-6 h-full px-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex justify-center relative">
+                   <div className="w-px h-full bg-emerald-500/40"></div>
+                </div>
               ))}
            </div>
         </div>
@@ -163,49 +168,56 @@ export default function HomelabLanding() {
           <ServiceCard hasRepo title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" />
           <ServiceCard hasRepo title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" />
           <div className="relative flex flex-col items-center">
-            <ServiceCard title="Active Directory" subtitle="Hybrid Windows Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" />
+            <ServiceCard title="Active Directory" subtitle="Hybrid Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" />
             <div className="absolute top-[100%] w-px h-12 bg-red-500/50 z-0">
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 uppercase border border-red-500/30 rounded">SSO</div>
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 border border-red-500/30 rounded uppercase tracking-tighter">SSO</div>
             </div>
           </div>
-          <ServiceCard hasRepo title="M.I.T.C.H" subtitle="Custom Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" />
-          <ServiceCard title="FileBrowser" subtitle="Public File Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" />
-          <ServiceCard hasRepo title="MitchMesh" subtitle="LoRa Drone Network" port="Isolated" icon="📡" colorClass="bg-cyan-500" />
+          <ServiceCard hasRepo title="M.I.T.C.H" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" />
+          <ServiceCard title="FileBrowser" subtitle="Public Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" />
+          <ServiceCard hasRepo title="MitchMesh" subtitle="LoRa Drone" port="Isolated" icon="📡" colorClass="bg-cyan-500" />
         </div>
 
-        {/* Hardware Footer */}
-        <div className="mt-16 p-8 border border-white/10 rounded-[2.5rem] bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden backdrop-blur-sm z-0">
-          
-          {/* Productivity to ZFS line (Routed from Productivity Box) */}
-          <div className="hidden lg:block absolute top-[-365px] right-[45px] w-px h-[420px] bg-emerald-500/40 z-0"></div>
-          <div className="hidden lg:block absolute bottom-[55px] right-[45px] left-[85%] h-px bg-emerald-500/40 z-0"></div>
+        {/* --- ORANGE REPO BUS (BELOW CARDS) --- */}
+        <div className="relative w-full max-w-6xl mx-auto h-12 mb-16">
+           <div className="absolute top-0 left-[5%] right-[10%] h-px bg-orange-500/40 z-0"></div>
+           <div className="grid grid-cols-6 h-full px-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex justify-center relative">
+                   { (i === 0 || i === 1 || i === 3 || i === 5) && 
+                     <div className="w-px h-full bg-orange-500/40"></div>
+                   }
+                </div>
+              ))}
+           </div>
+        </div>
 
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
-            <div className="text-left max-w-xs cursor-default">
-              <div className="flex items-center gap-2 mb-2 text-center">
+        {/* --- HARDWARE FOOTER --- */}
+        <div className="p-10 border border-white/10 rounded-[3rem] bg-gradient-to-b from-white/[0.03] to-transparent relative mt-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            <div className="text-left max-w-xs">
+              <div className="flex items-center gap-2 mb-3 text-center">
                 <span className="text-orange-500 font-black text-2xl">X</span>
                 <h2 className="text-xl font-bold text-white tracking-tight uppercase">Proxmox Cluster</h2>
               </div>
-              <p className="text-slate-500 text-xs uppercase tracking-wider font-semibold opacity-70">HA • ZFS • Cloud Sync</p>
+              <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black opacity-70">HA • ZFS • Cloud Backup</p>
             </div>
 
-            <div className="flex items-center gap-6">
-               <div onClick={() => handleCardClick("LDAP SSO")} className="group bg-red-500/5 border border-red-500/20 px-6 py-4 rounded-2xl text-center min-w-[120px] transition-all hover:bg-red-500/10 cursor-pointer">
-                  <div className="text-xl mb-1 group-hover:scale-110 transition-transform">🔐</div>
-                  <p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p>
-               </div>
-               <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex items-center gap-8">
+               <div className="bg-red-500/5 border border-red-500/20 px-6 py-4 rounded-3xl text-center"><div className="text-xl mb-1">🔐</div><p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p></div>
+               <div className="flex gap-4">
                  <ProxmoxNode nodeName="Node 1" status="Online" />
                  <ProxmoxNode nodeName="Node 2" status="Online" />
                  <ProxmoxNode nodeName="Node 3" status="Online" />
                </div>
             </div>
 
-            <div className="group bg-emerald-500/10 border border-emerald-500/20 p-5 rounded-2xl text-center min-w-[140px] transition-all hover:bg-emerald-600/20 cursor-pointer" onClick={() => handleCardClick("Storage Pool")}>
-              <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">🛢️</div>
+            <div className="group bg-emerald-500/10 border border-emerald-500/20 p-8 rounded-3xl text-center min-w-[180px] relative">
+              <div className="text-2xl mb-1">🛢️</div>
               <p className="text-white font-bold text-xs uppercase tracking-tighter">ZFS STORAGE</p>
-              <p className="text-emerald-400 text-[10px] font-bold italic mt-1 text-center">Sync Active</p>
+              <p className="text-emerald-400 text-[10px] font-bold italic mt-2">Sync Active</p>
+              {/* Landing Point for Green Productivity Line */}
+              <div className="absolute top-1/2 right-0 w-[50px] h-px bg-emerald-500/40 translate-x-full"></div>
             </div>
           </div>
         </div>
