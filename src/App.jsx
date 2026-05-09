@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-// --- Sub-Components ---
+// --- Sub-Components (Keep existing ServiceCard, ProxmoxNode, Sidebar) ---
 
 const ServiceCard = ({ title, subtitle, port, icon, colorClass, onClick }) => (
-  <div
-    onClick={onClick}
-    className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 cursor-pointer overflow-hidden h-full"
-  >
+  <div onClick={onClick} className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 cursor-pointer overflow-hidden h-full">
     <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 blur-xl transition-opacity ${colorClass}`}></div>
     <div className="relative z-10">
       <div className="text-3xl mb-4 transition-transform duration-300 group-hover:scale-110">{icon}</div>
@@ -18,10 +15,7 @@ const ServiceCard = ({ title, subtitle, port, icon, colorClass, onClick }) => (
 );
 
 const ProxmoxNode = ({ nodeName, status, onClick }) => (
-  <div 
-    onClick={onClick}
-    className="flex flex-col items-center p-4 bg-white/5 border border-white/10 rounded-xl hover:border-blue-500/50 hover:bg-white/10 transition-all duration-300 cursor-pointer group"
-  >
+  <div onClick={onClick} className="flex flex-col items-center p-4 bg-white/5 border border-white/10 rounded-xl hover:border-blue-500/50 hover:bg-white/10 transition-all duration-300 cursor-pointer group">
     <div className="w-16 h-10 bg-slate-800 rounded-md border-t-2 border-slate-600 mb-3 flex flex-col justify-center gap-1 px-2 shadow-inner group-hover:border-blue-400 transition-colors">
       <div className="flex justify-between">
         <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -56,9 +50,23 @@ const Sidebar = ({ isOpen, onClose, details }) => (
   </div>
 );
 
-// --- Data Layer ---
+// --- Extended Data Layer ---
 
 const componentData = {
+  "GitHub CI/CD": {
+    title: "GitHub",
+    subtitle: "Version Control & CI/CD",
+    icon: "🐙",
+    description: "The source of truth for the Homelab OS frontend. Pushes to the 'main' branch trigger an automated build and deployment via Cloudflare Pages.",
+    specs: ["Vite / React Source", "Actions Workflow", "Automated SSL"]
+  },
+  "Identity Providers": {
+    title: "Identity & MFA",
+    subtitle: "Authentication Layer",
+    icon: "🔑",
+    description: "Centralized identity management for external service access. Integrates multi-factor authentication for administrative dashboards.",
+    specs: ["Duo Security 2FA", "Microsoft Entra ID", "Google Workspace"]
+  },
   "Fasthosts Registrar": {
     title: "Fasthosts",
     subtitle: "Domain Registration",
@@ -70,7 +78,7 @@ const componentData = {
     title: "Cloudflare",
     subtitle: "Edge Security, DNS and CDN",
     icon: "☁️",
-    description: "Cloudflare provides the WAF (Web Application Firewall) and high-speed DNS resolution. It hides the home IP behind a proxy layer. It also hosts a simple landing page for the root domain and handles SSL termination before forwarding to the home network.",
+    description: "Cloudflare provides the WAF (Web Application Firewall) and high-speed DNS resolution. It hosts the frontend on Cloudflare Pages.",
     specs: ["Full HSTS Encryption", "DDoS Protection", "Edge Caching"]
   },
   "YouFibre Gateway": {
@@ -130,12 +138,30 @@ export default function HomelabLanding() {
 
         {/* --- Central Flow Chain --- */}
         <div className="relative flex flex-col items-center">
-          <div className="flex flex-col items-center mb-0 relative">
+          
+          {/* Public Internet + Identity Branch */}
+          <div className="flex flex-col items-center mb-0 relative group">
             <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
+            
+            {/* Horizontal Line to Identity */}
+            <div className="hidden lg:block absolute left-1/2 top-6 w-[200px] h-px bg-gradient-to-r from-blue-500/50 to-purple-500/50 ml-6"></div>
+            
+            {/* Identity Box */}
+            <div onClick={() => handleCardClick("Identity Providers")} className="hidden lg:block absolute left-1/2 top-[-10px] ml-[230px] w-48 text-left bg-white/5 border border-purple-500/20 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+                <p className="text-[8px] font-black uppercase text-purple-400 tracking-[0.2em] mb-2">Identity & MFA</p>
+                <div className="flex gap-3 items-center grayscale opacity-60">
+                   <span title="Microsoft" className="text-xs">🪟</span>
+                   <span title="Google" className="text-xs">🔍</span>
+                   <span title="Duo Security" className="text-xs text-green-500 font-bold">D</span>
+                </div>
+                <p className="text-[7px] text-slate-500 mt-2 font-mono uppercase tracking-tighter">Auth Service Providers</p>
+            </div>
+
             <div className="w-px h-6 bg-blue-500/30 mt-2"></div>
           </div>
 
+          {/* Fasthosts */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
                <div className="h-6 flex items-center justify-center px-4">
@@ -148,7 +174,21 @@ export default function HomelabLanding() {
             <div className="w-px h-6 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
+          {/* Cloudflare + GitHub Branch */}
           <div className="relative flex flex-col items-center">
+            
+            {/* Horizontal Line to GitHub */}
+            <div className="hidden lg:block absolute right-1/2 top-8 w-[120px] h-px bg-gradient-to-l from-orange-500/50 to-slate-500/50 mr-28"></div>
+            
+            {/* GitHub Box */}
+            <div onClick={() => handleCardClick("GitHub CI/CD")} className="hidden lg:block absolute right-1/2 top-[-10px] mr-[370px] w-40 bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+                <div className="flex items-center gap-2 justify-center mb-1">
+                   <span className="text-xl">🐙</span>
+                   <span className="text-xs font-bold text-white tracking-tighter">GitHub Repo</span>
+                </div>
+                <p className="text-[7px] text-slate-500 font-mono uppercase tracking-widest">CI/CD Pipeline</p>
+            </div>
+
             <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
                <div className="h-6 flex items-center justify-center px-4">
                   <img src="/cloudflare.svg" alt="Cloudflare" className="max-h-full max-w-[140px]" 
@@ -160,6 +200,7 @@ export default function HomelabLanding() {
             <div className="w-px h-6 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
 
+          {/* YouFibre */}
           <div className="relative flex flex-col items-center">
             <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
                <div className="h-6 flex items-center justify-center px-4">
@@ -172,6 +213,7 @@ export default function HomelabLanding() {
             <div className="w-px h-8 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
           </div>
 
+          {/* Nginx Hub */}
           <div className="relative flex flex-col items-center mb-0">
             <div 
               className="w-56 group relative cursor-pointer bg-white/5 border border-emerald-500/50 py-4 rounded-xl transition-all hover:scale-105 shadow-[0_0_30px_rgba(16,185,129,0.1)]"
@@ -184,7 +226,7 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* Wide Bus Bar Section */}
+        {/* --- Wide Bus Bar Section --- */}
         <div className="relative w-full max-w-7xl mx-auto mb-4">
            <div className="absolute top-0 left-[10.5%] right-[10.5%] h-px bg-emerald-500/40"></div>
            <div className="flex justify-between w-full px-[10.5%]">
@@ -227,14 +269,11 @@ export default function HomelabLanding() {
           </div>
         </div>
 
-        {/* COMPACT CONNECTION JOURNEY FOOTER */}
+        {/* --- Connection Journey Footer --- */}
         <div className="mt-12 max-w-5xl mx-auto pt-8 border-t border-white/5">
           <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-slate-500 mb-8">The Connection Journey</h3>
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative">
-            
-            {/* Connecting Line (Desktop) */}
             <div className="hidden md:block absolute top-6 left-0 w-full h-px bg-gradient-to-r from-blue-500/10 via-emerald-500/40 to-blue-500/10"></div>
-
             {[
               { step: "01", label: "DNS Lookup", desc: "andymitchell.online", color: "text-blue-400" },
               { step: "02", label: "WAF Filter", desc: "Cloudflare Edge", color: "text-orange-400" },
