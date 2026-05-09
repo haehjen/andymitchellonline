@@ -5,14 +5,14 @@ import React, { useState } from "react";
 const ServiceCard = ({ title, subtitle, port, icon, colorClass, onClick }) => (
   <div
     onClick={onClick}
-    className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 cursor-pointer overflow-hidden"
+    className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 cursor-pointer overflow-hidden h-full"
   >
     <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 blur-xl transition-opacity ${colorClass}`}></div>
     <div className="relative z-10">
       <div className="text-3xl mb-4 transition-transform duration-300 group-hover:scale-110">{icon}</div>
-      <h3 className="font-bold text-white tracking-tight">{title}</h3>
+      <h3 className="font-bold text-white tracking-tight text-sm">{title}</h3>
       <p className="text-slate-500 text-[10px] mb-2 uppercase tracking-widest">{subtitle}</p>
-      <p className={`text-xs font-mono font-bold ${colorClass.replace("bg-", "text-")}`}>{port}</p>
+      <p className={`text-[10px] font-mono font-bold ${colorClass.replace("bg-", "text-")}`}>{port}</p>
     </div>
   </div>
 );
@@ -56,7 +56,7 @@ const Sidebar = ({ isOpen, onClose, details }) => (
   </div>
 );
 
-// --- Data Layer ---
+// --- Content Data ---
 
 const componentData = {
   "Fasthosts Registrar": {
@@ -84,12 +84,10 @@ const componentData = {
     title: "Nginx Proxy Manager",
     subtitle: "Traffic Management",
     icon: "🛡️",
-    description: "The brain of the operation. It receives traffic on ports 80/443 and routes it to the correct internal service based on the subdomain.",
-    specs: ["Wildcard SSL (Let's Encrypt)", "Websockets Enabled", "Access Lists for Security"]
+    description: "The central hub. It receives traffic on ports 80/443 and routes it to the correct internal service based on subdomains.",
+    specs: ["Wildcard SSL", "Websockets Enabled", "Access Lists Active"]
   }
 };
-
-// --- Main App ---
 
 export default function HomelabLanding() {
   const [selectedComponent, setSelectedComponent] = useState(null);
@@ -99,7 +97,7 @@ export default function HomelabLanding() {
     const data = componentData[name] || { 
         title: name, 
         subtitle: "Infrastructure Component", 
-        description: "Configuration details for this node are managed locally via Proxmox and Nginx Proxy Manager." 
+        description: "Configuration details managed via Proxmox and Nginx Proxy Manager." 
     };
     setSelectedComponent(data);
     setIsSidebarOpen(true);
@@ -123,68 +121,80 @@ export default function HomelabLanding() {
 
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-24 text-center">
         
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">
           One Home. <span className="italic font-light text-slate-500">One IP.</span>
         </h1>
-        <p className="max-w-2xl mx-auto text-slate-500 mb-12 text-sm uppercase font-bold tracking-[0.2em]">
+        <p className="max-w-2xl mx-auto text-slate-500 mb-12 text-[10px] uppercase font-bold tracking-[0.4em]">
           Endless Possibilities
         </p>
 
-        {/* --- Central Flow Chain (FIXED ALIGNMENT) --- */}
-        <div className="relative mb-20 flex flex-col items-center">
+        {/* --- Central Flow Chain --- */}
+        <div className="relative mb-0 flex flex-col items-center">
           
           {/* Public Internet */}
           <div className="flex flex-col items-center mb-0 relative">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl">🌐</div>
+            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(59,130,246,0.1)]">🌐</div>
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
-            <div className="w-px h-10 bg-gradient-to-b from-blue-500/50 to-blue-500/50 mt-2"></div>
+            <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
           </div>
 
           {/* Fasthosts */}
           <div className="relative flex flex-col items-center">
-            <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-48 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
-               <span className="text-white font-black tracking-tighter text-sm italic">Fasthosts</span>
+            <div onClick={() => handleCardClick("Fasthosts Registrar")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-blue-500/50">
+               {/* Placeholder for Fasthosts Logo */}
+               <div className="h-5 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white font-black tracking-tighter text-sm italic">FASTHOSTS</span>
+               </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">Registrar</p>
             </div>
-            <div className="w-px h-10 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
+            <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
           </div>
 
           {/* Cloudflare */}
           <div className="relative flex flex-col items-center">
-            <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-48 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
-               <span className="text-white font-black tracking-tighter text-sm italic">Cloudflare</span>
+            <div onClick={() => handleCardClick("Cloudflare DNS")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-orange-500/50">
+               {/* Placeholder for Cloudflare Logo */}
+               <div className="h-5 flex items-center justify-center">
+                  <span className="text-[#f38020] font-black tracking-tighter text-sm italic">CLOUDFLARE</span>
+               </div>
                <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest mt-1">DNS & Security</p>
             </div>
-            <div className="w-px h-10 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
+            <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
           </div>
 
           {/* YouFibre */}
           <div className="relative flex flex-col items-center">
-            <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-48 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
-               <span className="text-white font-black tracking-tighter text-sm italic">YouFibre</span>
-               <p className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mt-1">Static IP <span className="text-red-500 font-bold">PAID</span></p>
+            <div onClick={() => handleCardClick("YouFibre Gateway")} className="w-56 group relative cursor-pointer bg-white/5 border border-slate-700 py-4 rounded-xl transition-all hover:scale-105 hover:border-red-500/50">
+               {/* Placeholder for YouFibre Logo */}
+               <div className="h-5 flex items-center justify-center">
+                  <span className="text-white font-black tracking-tighter text-sm italic">YOU<span className="text-red-600">FIBRE</span></span>
+               </div>
+               <p className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mt-1">Static IP <span className="text-red-500 font-bold italic">PAID</span></p>
             </div>
-            <div className="w-px h-12 bg-gradient-to-b from-red-500 to-emerald-500"></div>
+            <div className="w-px h-8 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
           </div>
 
-          {/* Nginx Hub */}
-          <div className="relative z-10">
+          {/* Nginx Hub (Uniform Width) */}
+          <div className="relative flex flex-col items-center">
             <div 
-              className="group bg-white rounded-2xl p-8 text-slate-900 shadow-[0_0_50px_rgba(59,130,246,0.1)] border border-white/20 inline-block transition-all hover:scale-105 cursor-pointer"
+              className="w-56 group relative cursor-pointer bg-white border border-white/20 py-6 rounded-xl transition-all hover:scale-105 shadow-[0_0_40px_rgba(16,185,129,0.1)]"
               onClick={() => handleCardClick("Nginx Reverse Proxy")}
             >
-              <div className="text-[#009639] text-3xl font-black mb-1 leading-none uppercase">Nginx</div>
-              <p className="font-bold uppercase tracking-tighter text-sm">Reverse Proxy</p>
-              <div className="flex gap-2 justify-center mt-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                <span>SSL</span> • <span>Routing</span> • <span>Headers</span>
-              </div>
+              <div className="text-[#009639] text-xl font-black leading-none uppercase italic">Nginx</div>
+              <p className="font-bold uppercase tracking-widest text-[9px] text-slate-900 mt-1">Reverse Proxy</p>
             </div>
-            <div className="absolute left-1/2 top-full w-px h-16 bg-gradient-to-b from-emerald-500 to-transparent"></div>
+            
+            {/* The "Bus Bar" Logic */}
+            <div className="w-px h-10 bg-emerald-500"></div>
+            <div className="w-[80%] h-px bg-emerald-500/50"></div>
+            <div className="flex justify-between w-[80%] px-[10%]">
+               {[1,2,3,4,5].map(i => <div key={i} className="w-px h-6 bg-emerald-500/30"></div>)}
+            </div>
           </div>
         </div>
 
         {/* Service Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-20 mt-0">
           <ServiceCard title="Minecraft" subtitle="Game Hosting" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Minecraft Server")} />
           <ServiceCard title="DayZ Server" subtitle="Game Hosting" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ Server")} />
           <ServiceCard title="Mitch AI" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("Mitch AI")} />
@@ -202,7 +212,7 @@ export default function HomelabLanding() {
                 <h2 className="text-xl font-bold text-white tracking-tight uppercase">Proxmox Cluster</h2>
               </div>
               <p className="text-slate-500 text-xs uppercase tracking-wider font-semibold opacity-70">
-                High Availability Cluster • ZFS Storage Pool • 24/7 Virtualization
+                High Availability • ZFS Storage • 24/7 Virtualization
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
