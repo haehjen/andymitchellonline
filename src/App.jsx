@@ -356,8 +356,8 @@ function Diagram({ onSelect }) {
   };
 
   return (
-    <section className="rounded-xl bg-slate-50 p-7 text-slate-900 shadow-2xl ring-1 ring-white/20">
-      <div className="relative mx-auto max-w-[900px]">
+    <section className="overflow-hidden rounded-xl bg-slate-50 p-4 text-slate-900 shadow-2xl ring-1 ring-white/20 sm:p-7">
+      <div className="relative mx-auto min-w-0 max-w-[900px]">
         <div className="flex flex-col items-center">
           <div className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-[10px] font-black uppercase tracking-wide text-blue-700">
             Public Internet
@@ -401,10 +401,10 @@ function Diagram({ onSelect }) {
           </button>
           <div
             ref={serviceRailRef}
-            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-11 pb-2 [scrollbar-width:none] md:grid md:overflow-visible md:px-0 md:pb-0 md:grid-cols-3 xl:grid-cols-6"
+            className="flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] md:grid md:overflow-visible md:pb-0 md:grid-cols-3 xl:grid-cols-6"
           >
             {services.map((service) => (
-              <div key={service} className="relative min-w-full snap-center md:min-w-0">
+              <div key={service} className="relative min-w-0 flex-[0_0_100%] snap-center md:flex-auto">
                 <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
                 <ServiceCard id={service} onSelect={onSelect} />
               </div>
@@ -470,11 +470,11 @@ export default function App() {
   const current = useMemo(() => components[selected], [selected]);
 
   return (
-    <div className="min-h-screen bg-[#081421] text-slate-200">
+    <div className="min-h-screen overflow-x-hidden bg-[#081421] text-slate-200">
       <div className="mx-auto min-h-screen max-w-[1420px] overflow-hidden rounded-none border border-slate-700/60 bg-[#0b1828] shadow-2xl lg:my-1 lg:rounded-xl">
         <Nav />
-        <main id="overview" className="bg-[radial-gradient(circle_at_35%_0%,rgba(37,99,235,0.22),transparent_38%),linear-gradient(180deg,#0c1c2f_0%,#07111f_100%)] px-6 py-8">
-          <section className="mx-auto max-w-[1320px]">
+        <main id="overview" className="bg-[radial-gradient(circle_at_35%_0%,rgba(37,99,235,0.22),transparent_38%),linear-gradient(180deg,#0c1c2f_0%,#07111f_100%)] px-4 py-6 sm:px-6 sm:py-8">
+          <section className="mx-auto min-w-0 max-w-[1320px]">
             <div className="mb-7">
               <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">
                 One Home. <span className="italic">One IP.</span> Endless Possibilities.
@@ -484,9 +484,9 @@ export default function App() {
               </p>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[1fr_330px]">
+            <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
               <Diagram onSelect={setSelected} />
-              <div>
+              <div className="min-w-0">
                 <DetailPanel selected={selected} onClose={() => setSelected("proxmox")} />
                 <p className="mt-5 px-4 text-center text-xs leading-5 text-slate-400">
                   Hover over or click any component to learn more about how it works.
