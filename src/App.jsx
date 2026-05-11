@@ -73,23 +73,37 @@ const components = {
       "Local AI workloads sit behind the reverse proxy so private tools can be reached securely.",
     bullets: ["Port 8080", "Local inference", "Private tools", "Controlled access"],
   },
-  home: {
-    title: "Home Services",
-    subtitle: "Utilities & Tools",
+  filebrowser: {
+    title: "FileBrowser",
+    subtitle: "Public File Share",
     accent: "blue",
-    icon: "HS",
+    icon: "FB",
     description:
-      "Utility services for the household live together behind routed hostnames and consistent TLS.",
-    bullets: ["Dashboards", "File tools", "Automation", "Monitoring"],
+      "FileBrowser is a Linux-hosted public file share exposed at fileshare.andymitchell.online and routed securely through Nginx.",
+    bullets: [
+      "fileshare.andymitchell.online",
+      "Linux-hosted deployment",
+      "Routed through Nginx",
+      "Automated SSL renewal",
+      "Dedicated public file share",
+    ],
+    readMoreHref: "/fileshare",
   },
-  docker: {
-    title: "Docker Containers",
-    subtitle: "Apps & Services",
+  mitchmesh: {
+    title: "MitchMesh",
+    subtitle: "Autonomous Drone Mesh",
     accent: "cyan",
-    icon: "DC",
+    icon: "MM",
     description:
-      "Containerized apps are isolated from core infrastructure while still being reachable through Nginx.",
-    bullets: ["App containers", "Private networks", "Compose stacks", "Easy rollbacks"],
+      "MitchMesh connects Mitch to six ESP32-based automated drone nodes using LoRa radio and GPS positioning.",
+    bullets: [
+      "Six automated ESP32 drone nodes",
+      "RA-02 LoRa radio link",
+      "NEO-3M GPS positioning",
+      "Mitch API publishes target coordinates",
+      "Motor controllers and power regulation onboard",
+    ],
+    readMoreHref: "/mitchmesh",
   },
   proxmox: {
     title: "Proxmox VE Cluster",
@@ -126,7 +140,7 @@ const accent = {
   red: "border-rose-200 text-rose-700 bg-rose-50",
 };
 
-const publicRepoComponents = new Set(["cloudflare", "minecraft", "dayz", "mitch"]);
+const publicRepoComponents = new Set(["cloudflare", "minecraft", "dayz", "mitch", "mitchmesh"]);
 
 function Nav() {
   return (
@@ -240,7 +254,17 @@ function ServiceCard({ id, onSelect }) {
       <div className="text-xs font-black text-slate-900">{item.title}</div>
       <div className="mt-1 text-[10px] font-semibold text-slate-500">{item.subtitle}</div>
       <div className="mt-1 text-[10px] font-bold text-emerald-600">
-        {id === "minecraft" ? "Port: 25565" : id === "dayz" ? "Port: 2302" : id === "mitch" ? "Port: 8080" : id === "docker" ? "Isolated" : "Private"}
+        {id === "minecraft"
+          ? "Port: 25565"
+          : id === "dayz"
+            ? "Port: 2302"
+            : id === "mitch"
+              ? "Port: 8080"
+              : id === "filebrowser"
+                ? "fileshare.andymitchell.online"
+                : id === "mitchmesh"
+                  ? "LoRa + GPS"
+                  : "Private"}
       </div>
     </button>
   );
@@ -280,9 +304,12 @@ function DetailPanel({ selected, onClose }) {
           This cluster runs all core services including game servers, AI tools, and self-hosted applications.
         </div>
         {showReadMore && (
-          <button className="mt-5 w-full rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500">
+          <a
+            href={item.readMoreHref || "#"}
+            className="mt-5 block w-full rounded-lg bg-blue-600 px-4 py-3 text-center text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500"
+          >
             Read More →
-          </button>
+          </a>
         )}
       </div>
     </aside>
@@ -302,7 +329,7 @@ function ConnectionStep({ number, label, sub }) {
 }
 
 function Diagram({ onSelect }) {
-  const services = ["minecraft", "dayz", "mitch", "home", "docker"];
+  const services = ["minecraft", "dayz", "mitch", "filebrowser", "mitchmesh"];
   const ingressFlow = [
     { id: "fasthosts", image: "/fasthosts.svg", imageClass: "h-6" },
     { id: "cloudflare", image: "/cloudflare.svg", imageClass: "h-9" },
