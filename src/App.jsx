@@ -340,6 +340,7 @@ function DetailPanel({ selected, onClose }) {
 function Diagram({ selected, onSelect }) {
   const services = ["minecraft", "dayz", "mitch", "filebrowser", "mitchmesh", "raspberry"];
   const serviceRailRef = useRef(null);
+  const serviceRefs = useRef({});
   const ingressFlow = [
     { id: "fasthosts", image: "/fasthosts.svg", imageClass: "h-6" },
     { id: "cloudflare", image: "/cloudflare.svg", imageClass: "h-9" },
@@ -353,6 +354,30 @@ function Diagram({ selected, onSelect }) {
       left: direction * rail.clientWidth,
       behavior: "smooth",
     });
+  };
+  const handleServiceScroll = () => {
+    const rail = serviceRailRef.current;
+    if (!rail || window.matchMedia("(min-width: 768px)").matches) return;
+
+    const railCenter = rail.scrollLeft + rail.clientWidth / 2;
+    let nearestService = services[0];
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    services.forEach((service) => {
+      const node = serviceRefs.current[service];
+      if (!node) return;
+
+      const nodeCenter = node.offsetLeft + node.offsetWidth / 2;
+      const distance = Math.abs(nodeCenter - railCenter);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestService = service;
+      }
+    });
+
+    if (nearestService !== selected) {
+      onSelect(nearestService);
+    }
   };
 
   return (
@@ -402,10 +427,17 @@ function Diagram({ selected, onSelect }) {
           <div className="px-11 md:px-0">
             <div
               ref={serviceRailRef}
+              onScroll={handleServiceScroll}
               className="flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] md:grid md:overflow-visible md:pb-0 md:grid-cols-3 xl:grid-cols-6"
             >
               {services.map((service) => (
-                <div key={service} className="relative min-w-0 flex-[0_0_100%] snap-center md:flex-auto">
+                <div
+                  key={service}
+                  ref={(node) => {
+                    serviceRefs.current[service] = node;
+                  }}
+                  className="relative min-w-0 flex-[0_0_100%] snap-center md:flex-auto"
+                >
                   <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
                   <ServiceCard id={service} onSelect={onSelect} />
                 </div>
