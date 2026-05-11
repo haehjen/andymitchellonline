@@ -1,241 +1,389 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
-// --- Sub-Components ---
-const ServiceCard = ({ title, subtitle, port, icon, colorClass, onClick, hasRepo }) => (
-  <div onClick={onClick} className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 cursor-pointer overflow-hidden h-full">
-    {hasRepo && <div className="absolute top-3 left-3 w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)] z-30"></div>}
-    <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 blur-xl transition-opacity ${colorClass}`}></div>
-    <div className="relative z-10 text-center">
-      <div className="text-3xl mb-4 transition-transform duration-300 group-hover:scale-110">{icon}</div>
-      <h3 className="font-bold text-white tracking-tight text-sm uppercase">{title}</h3>
-      <p className="text-slate-500 text-[10px] mb-2 uppercase tracking-[0.2em] font-black">{subtitle}</p>
-      <p className={`text-[10px] font-mono font-bold ${colorClass.replace("bg-", "text-")}`}>{port}</p>
-    </div>
-  </div>
-);
+const components = {
+  cloudflare: {
+    title: "Cloudflare DNS & DDNS",
+    subtitle: "Domain Management",
+    accent: "orange",
+    icon: "CF",
+    description:
+      "Cloudflare fronts the domain, keeps public records tidy, and points traffic at the single public IP for the lab.",
+    bullets: ["DNS records", "DDNS automation", "Proxy and WAF rules", "TLS edge security"],
+  },
+  nginx: {
+    title: "Nginx Reverse Proxy",
+    subtitle: "All Incoming Traffic",
+    accent: "green",
+    icon: "NX",
+    description:
+      "Nginx receives public traffic and routes requests to the correct internal service by hostname.",
+    bullets: ["SSL handoff", "Host-based routing", "Force HTTPS", "Health checks"],
+  },
+  entra: {
+    title: "Microsoft Entra ID",
+    subtitle: "Authentication",
+    accent: "blue",
+    icon: "ID",
+    description:
+      "Entra handles single sign-on and access controls for services that need identity-aware access.",
+    bullets: ["SSO and access policies", "MFA support", "External identity", "Conditional access"],
+  },
+  minecraft: {
+    title: "Minecraft Server",
+    subtitle: "Game Hosting",
+    accent: "green",
+    icon: "MC",
+    description:
+      "A dedicated game service exposed through the home lab route with its own VM boundary.",
+    bullets: ["Port 25565", "Dedicated VM", "Backups enabled", "Resource limits"],
+  },
+  dayz: {
+    title: "DayZ Server",
+    subtitle: "Game Hosting",
+    accent: "slate",
+    icon: "DZ",
+    description:
+      "DayZ hosting runs as an isolated service with public ingress routed through the same public IP.",
+    bullets: ["Port 2302", "Dedicated VM", "Isolated configs", "Scheduled restarts"],
+  },
+  mitch: {
+    title: "Mitch AI Assistant",
+    subtitle: "Local AI Services",
+    accent: "orange",
+    icon: "AI",
+    description:
+      "Local AI workloads sit behind the reverse proxy so private tools can be reached securely.",
+    bullets: ["Port 8080", "Local inference", "Private tools", "Controlled access"],
+  },
+  home: {
+    title: "Home Services",
+    subtitle: "Utilities & Tools",
+    accent: "blue",
+    icon: "HS",
+    description:
+      "Utility services for the household live together behind routed hostnames and consistent TLS.",
+    bullets: ["Dashboards", "File tools", "Automation", "Monitoring"],
+  },
+  docker: {
+    title: "Docker Containers",
+    subtitle: "Apps & Services",
+    accent: "cyan",
+    icon: "DC",
+    description:
+      "Containerized apps are isolated from core infrastructure while still being reachable through Nginx.",
+    bullets: ["App containers", "Private networks", "Compose stacks", "Easy rollbacks"],
+  },
+  proxmox: {
+    title: "Proxmox VE Cluster",
+    subtitle: "Virtualization Platform",
+    accent: "orange",
+    icon: "PX",
+    description:
+      "A three-node Proxmox cluster running on HP ProLiant ML350 Gen9 servers with matching specifications and ZFS storage.",
+    bullets: [
+      "3x HP ProLiant ML350 Gen9",
+      "3-node high availability cluster",
+      "ZFS for storage and snapshots",
+      "Live migration and failover",
+      "Backups and redundancy",
+    ],
+  },
+  raspberry: {
+    title: "Raspberry Pi",
+    subtitle: "The Home Core",
+    accent: "red",
+    icon: "PI",
+    description:
+      "A small always-on controller for low-power jobs and the basic home core services.",
+    bullets: ["Always on", "Low power", "Local utilities", "Fallback control"],
+  },
+};
 
-const ProxmoxNode = ({ nodeName, status }) => (
-  <div className="flex flex-col items-center p-4 bg-white/5 border border-white/10 rounded-xl group transition-all">
-    <div className="w-16 h-10 bg-slate-800 rounded-md border-t-2 border-slate-600 mb-3 flex flex-col justify-center gap-1 px-2 shadow-inner group-hover:border-blue-400 transition-colors text-center">
-      <div className="flex justify-between">
-        <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div>
-        <div className="w-4 h-0.5 bg-slate-600 rounded"></div>
-      </div>
-      <div className="w-full h-0.5 bg-slate-700 rounded"></div>
-    </div>
-    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{nodeName}</span>
-    <span className="text-[9px] text-emerald-500 font-mono mt-1">{status}</span>
-  </div>
-);
+const accent = {
+  orange: "border-orange-200 text-orange-600 bg-orange-50",
+  green: "border-emerald-200 text-emerald-700 bg-emerald-50",
+  blue: "border-sky-200 text-sky-700 bg-sky-50",
+  cyan: "border-cyan-200 text-cyan-700 bg-cyan-50",
+  slate: "border-slate-200 text-slate-700 bg-slate-50",
+  red: "border-rose-200 text-rose-700 bg-rose-50",
+};
 
-const Sidebar = ({ isOpen, onClose, details }) => (
-  <div className={`fixed top-0 right-0 h-full w-80 bg-[#020617] border-l border-white/10 z-[100] transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} shadow-2xl p-8 overflow-y-auto`}>
-    <button onClick={onClose} className="absolute top-4 right-4 text-slate-500 hover:text-white text-xl">✕</button>
-    <div className="mt-8 text-left">
-      <div className="text-4xl mb-4">{details?.icon || '⚙️'}</div>
-      <h2 className="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">{details?.title}</h2>
-      <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">{details?.subtitle}</p>
-      <div className="space-y-4 text-sm border-t border-white/5 pt-6">
-        <p className="text-slate-400 leading-relaxed">{details?.description}</p>
-        {details?.specs && (
-          <div className="bg-white/5 p-4 rounded-xl">
-            <h4 className="text-[10px] uppercase font-black text-slate-500 mb-2">Technical Specs</h4>
-            <ul className="space-y-1 font-mono text-[11px] text-slate-300">
-              {details.specs.map((spec, i) => <li key={i}>• {spec}</li>)}
-            </ul>
+function Nav() {
+  return (
+    <header className="border-b border-white/5 bg-[#07111f]/90">
+      <div className="mx-auto flex max-w-[1320px] items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-3">
+          <div className="grid h-8 w-8 place-items-center rounded border border-blue-400/40 bg-blue-500/10 text-sm font-black text-blue-300">
+            H
           </div>
-        )}
+          <div>
+            <div className="text-sm font-bold text-white">Homelab OS</div>
+            <div className="text-[10px] text-slate-400">Self-Hosted. Zero Cost. Unlimited Potential.</div>
+          </div>
+        </div>
+        <nav className="hidden items-center gap-9 text-xs font-semibold text-slate-300 md:flex">
+          <a className="border-b-2 border-blue-500 pb-3 text-blue-300" href="#overview">Overview</a>
+          <a href="#how">How It Works</a>
+          <a href="#connect">Connect</a>
+          <a href="#blog">Blog</a>
+          <a href="#about">About</a>
+        </nav>
       </div>
+    </header>
+  );
+}
+
+function LogoBadge({ children, className = "" }) {
+  return (
+    <div className={`grid h-12 w-12 place-items-center rounded-full border bg-white text-[11px] font-black shadow-md ${className}`}>
+      {children}
     </div>
-  </div>
-);
+  );
+}
 
-export default function HomelabLanding() {
-  const [selectedComponent, setSelectedComponent] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+function ExternalCard({ id, children, onSelect }) {
+  const item = components[id];
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(id)}
+      className="rounded-lg border border-slate-200 bg-white p-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+    >
+      {children}
+      <div className="mt-3 text-[10px] font-black uppercase tracking-wide text-slate-900">{item.title.split(" ")[0]}</div>
+      <div className="mt-1 text-[9px] font-semibold text-slate-500">{item.subtitle}</div>
+    </button>
+  );
+}
 
-  const handleCardClick = (name, details) => {
-    setSelectedComponent(details || { title: name, subtitle: "Infrastructure Component", description: "System component details." });
-    setIsSidebarOpen(true);
-  };
+function ServiceCard({ id, onSelect }) {
+  const item = components[id];
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(id)}
+      className="relative rounded-lg border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+    >
+      <LogoBadge className={`mx-auto mb-3 h-10 w-10 ${accent[item.accent]}`}>{item.icon}</LogoBadge>
+      <div className="text-xs font-black text-slate-900">{item.title}</div>
+      <div className="mt-1 text-[10px] font-semibold text-slate-500">{item.subtitle}</div>
+      <div className="mt-1 text-[10px] font-bold text-emerald-600">
+        {id === "minecraft" ? "Port: 25565" : id === "dayz" ? "Port: 2302" : id === "mitch" ? "Port: 8080" : id === "docker" ? "Isolated" : "Private"}
+      </div>
+    </button>
+  );
+}
+
+function DetailPanel({ selected, onClose }) {
+  const item = components[selected];
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-blue-500/30 overflow-x-hidden">
-      
-      {isSidebarOpen && <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90]" onClick={() => setIsSidebarOpen(false)} />}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} details={selectedComponent} />
-
-      <nav className="flex justify-center px-8 py-6 max-w-7xl mx-auto relative z-10">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg">🏠</div>
-          <span className="font-bold text-white tracking-tighter text-xl">Homelab OS</span>
+    <aside className="rounded-xl bg-white p-5 text-slate-800 shadow-2xl ring-1 ring-slate-200">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-sm font-black">Component Details</h2>
+        <button
+          type="button"
+          onClick={onClose}
+          className="grid h-7 w-7 place-items-center rounded-full text-lg leading-none text-slate-500 hover:bg-slate-100"
+          aria-label="Close details"
+        >
+          x
+        </button>
+      </div>
+      <div className="rounded-lg border border-slate-100 bg-slate-50/70 p-5">
+        <LogoBadge className={`mb-3 h-16 w-16 rounded-xl text-lg ${accent[item.accent]}`}>{item.icon}</LogoBadge>
+        <h3 className="text-lg font-black text-slate-950">{item.title}</h3>
+        <div className="mb-4 text-xs font-bold text-blue-600">{item.subtitle}</div>
+        <p className="text-sm leading-6 text-slate-700">{item.description}</p>
+        <ul className="mt-5 space-y-2 text-sm">
+          {item.bullets.map((bullet) => (
+            <li key={bullet} className="flex gap-2 text-slate-700">
+              <span className="font-black text-emerald-500">✓</span>
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-5 rounded-lg bg-blue-50 p-4 text-xs leading-5 text-slate-700">
+          This cluster runs all core services including game servers, AI tools, and self-hosted applications.
         </div>
-      </nav>
+        <button className="mt-5 w-full rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500">
+          Read More →
+        </button>
+      </div>
+    </aside>
+  );
+}
 
-      <main className="max-w-7xl mx-auto px-4 pb-24 text-center">
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight uppercase">One Home. <span className="italic font-light text-slate-500 font-serif">One IP.</span></h1>
-          <p className="text-slate-500 text-[10px] uppercase font-bold tracking-[0.4em]">Endless Possibilities</p>
+function ConnectionStep({ number, label, sub }) {
+  return (
+    <div className="flex min-w-[96px] flex-1 flex-col items-center text-center">
+      <div className="grid h-12 w-12 place-items-center rounded-full border border-blue-400/25 bg-blue-500/10 text-sm font-black text-blue-300">
+        {number}
+      </div>
+      <div className="mt-3 text-xs font-bold text-white">{label}</div>
+      <div className="mt-1 text-[10px] text-slate-400">{sub}</div>
+    </div>
+  );
+}
+
+function Diagram({ onSelect }) {
+  const services = ["minecraft", "dayz", "mitch", "home", "docker"];
+
+  return (
+    <section className="rounded-xl bg-slate-50 p-7 text-slate-900 shadow-2xl ring-1 ring-white/20">
+      <div className="relative mx-auto max-w-[900px]">
+        <div className="flex flex-col items-center">
+          <LogoBadge className="border-blue-200 text-blue-600">WEB</LogoBadge>
+          <div className="mt-2 text-[10px] font-black">Public Internet</div>
+          <div className="mt-2 h-6 w-px bg-blue-400" />
+          <div className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-black text-emerald-700">
+            1 Public IP
+          </div>
+          <div className="h-6 w-px bg-blue-400" />
         </div>
 
-        {/* --- Top Logic Layer --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative max-w-6xl mx-auto mb-16">
-          
-          {/* GitHub Source (Left) */}
-          <div className="relative flex flex-col items-center pt-24">
-            <div onClick={() => handleCardClick("Source Repos", { title: "GitHub Organization", subtitle: "Version Control Hub", icon: "🐙", description: "Multi-repo management for the entire lab.", specs: ["Pidgiemon", "iAMLegendary", "MITCH Core", "MitchMesh Firmware"] })} 
-                 className="w-48 bg-white/5 border border-orange-500/30 p-5 rounded-2xl hover:bg-white/10 cursor-pointer z-20 text-center relative">
-                <div className="font-black text-white text-[10px] uppercase">🐙 Source Repos</div>
-                <p className="text-[7px] text-orange-400 font-mono uppercase tracking-[0.2em] font-black mt-2">Version Control Hub</p>
-                <div className="absolute top-1/2 left-0 w-px h-[600px] bg-orange-500/40 -translate-x-12"></div>
-                <div className="absolute top-1/2 left-0 w-12 h-px bg-orange-500/40 -translate-x-12"></div>
+        <div className="grid items-center gap-6 md:grid-cols-[150px_1fr_150px]">
+          <ExternalCard id="cloudflare" onSelect={onSelect}>
+            <img src="/cloudflare.svg" alt="" className="mx-auto h-10" />
+          </ExternalCard>
+
+          <button
+            type="button"
+            onClick={() => onSelect("nginx")}
+            className="relative rounded-lg border border-slate-200 bg-white px-8 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+          >
+            <div className="text-3xl font-black tracking-tight text-emerald-600">NGINX</div>
+            <div className="mt-1 text-xs font-black text-slate-950">Nginx Reverse Proxy</div>
+            <div className="mt-1 text-[10px] text-slate-500">All incoming traffic routed by hostname</div>
+            <span className="absolute left-[-96px] top-1/2 hidden h-px w-24 border-t border-dashed border-blue-400 md:block" />
+            <span className="absolute right-[-96px] top-1/2 hidden h-px w-24 border-t border-dashed border-blue-400 md:block" />
+          </button>
+
+          <ExternalCard id="entra" onSelect={onSelect}>
+            <img src="/entraid.svg" alt="" className="mx-auto h-10" />
+          </ExternalCard>
+        </div>
+
+        <div className="mx-auto mt-7 h-9 w-px bg-blue-400" />
+        <div className="mx-auto h-px max-w-[720px] bg-blue-400" />
+
+        <div className="relative grid gap-4 pt-5 md:grid-cols-5">
+          {services.map((service) => (
+            <div key={service} className="relative">
+              <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px bg-blue-400 md:block" />
+              <ServiceCard id={service} onSelect={onSelect} />
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onSelect("proxmox")}
+          className="mt-8 grid w-full gap-5 rounded-lg border border-emerald-300 bg-emerald-50/70 p-5 text-left transition hover:border-emerald-500 md:grid-cols-[220px_1fr_120px]"
+        >
+          <div className="flex items-center gap-4">
+            <LogoBadge className="rounded-lg border-orange-200 bg-orange-50 text-orange-600">PX</LogoBadge>
+            <div>
+              <div className="text-sm font-black text-slate-950">Proxmox VE Cluster</div>
+              <div className="mt-1 text-[10px] text-slate-600">3-node cluster</div>
+              <div className="text-[10px] text-slate-600">Virtualization platform</div>
             </div>
           </div>
-
-          {/* Traffic Column (Center) */}
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl">🌐</div>
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 mt-2">Public Internet</span>
-            <div className="w-px h-8 bg-blue-500/30 mt-2"></div>
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4"><img src="/fasthosts.svg" alt="Fasthosts" className="h-4 mx-auto brightness-0 invert" /></div>
-            <div className="w-px h-8 bg-gradient-to-b from-blue-500/50 to-orange-500/50"></div>
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4"><img src="/cloudflare.svg" alt="Cloudflare" className="h-4 mx-auto" /></div>
-            <div className="w-px h-8 bg-gradient-to-b from-orange-500/50 to-red-500/50"></div>
-            <div className="w-56 bg-white/5 border border-slate-700 py-4 rounded-xl mb-4 flex items-center justify-center h-[52px]">
-               <img src="/youfibre.png" alt="YouFibre" className="h-4 mx-auto grayscale" />
-            </div>
-            <div className="w-px h-10 bg-gradient-to-b from-red-500/50 to-emerald-500"></div>
-            <div className="w-56 bg-white/5 border border-emerald-500/50 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.1)]">
-              <div className="text-emerald-500 text-sm font-black leading-none uppercase italic">Nginx Proxy</div>
-              <p className="font-bold uppercase tracking-[0.2em] text-[8px] text-slate-500 mt-2">Central Routing</p>
-            </div>
-          </div>
-
-          {/* Identity Column (Right) */}
-          <div className="relative flex flex-col items-center pt-4 space-y-8">
-            <div onClick={() => handleCardClick("Identity", { title: "Identity Hub", subtitle: "Authentication Hub", icon: "🔑", description: "Hybrid sync for all access." })} 
-                 className="w-64 bg-white/5 border border-purple-500/40 p-5 rounded-3xl text-left cursor-pointer">
-                <p className="text-[9px] font-black uppercase text-purple-400 tracking-[0.2em] mb-4">Identity & MFA</p>
-                <div className="flex gap-4 items-center h-5">
-                   <img src="/entraid.svg" alt="Entra" className="h-full opacity-80" />
-                   <img src="/google.svg" alt="Google" className="h-full opacity-80" />
-                   <img src="/duo.svg" alt="Duo" className="h-full opacity-80" />
+          <div className="grid gap-4 sm:grid-cols-3">
+            {["Node 1", "Node 2", "Node 3"].map((node) => (
+              <div key={node} className="flex items-center gap-3 rounded-md bg-white/70 p-3">
+                <div className="h-9 w-12 rounded bg-slate-700 shadow-inner" />
+                <div>
+                  <div className="text-[10px] font-black">HP ProLiant</div>
+                  <div className="text-[10px]">ML350 Gen9</div>
+                  <div className="text-[10px] font-bold text-emerald-600">{node}</div>
                 </div>
-            </div>
-            <div className="w-px h-8 bg-purple-500/30"></div>
-            <div onClick={() => handleCardClick("Productivity", { title: "Productivity", subtitle: "Cloud Sync", specs: ["Google Workspace & GDrive", "M365 & OneDrive"] })}
-                 className="w-64 bg-white/5 border border-blue-500/40 p-5 rounded-2xl text-left hover:bg-white/10 cursor-pointer relative">
-                <p className="text-[9px] font-black uppercase text-blue-400 tracking-[0.2em] mb-3">Productivity</p>
-                <div className="text-[9px] font-bold text-white/90 space-y-2 font-mono uppercase tracking-tighter">
-                   <div>Google Workspace & GDrive</div>
-                   <div>M365 & OneDrive</div>
-                </div>
-                <div className="absolute top-1/2 right-0 w-[50px] h-px bg-emerald-500/40 translate-x-full"></div>
-                <div className="absolute top-1/2 right-0 w-px h-[660px] bg-emerald-500/40 translate-x-[50px]"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* --- GREEN BUS (TOP ANCHOR) --- */}
-        {/* This bus bar is positioned above the service grid and its vertical lines extend downwards to connect. */}
-        <div className="relative w-full h-8 mb-2"> {/* Removed max-w-6xl mx-auto for better alignment with main content, adjusted height */}
-           {/* Horizontal line at the bottom of this container */}
-           <div className="absolute bottom-0 left-0 right-0 h-px bg-emerald-500/40"></div>
-           {/* Vertical lines container. Aligned with the horizontal line and service grid columns. */}
-           <div className="grid grid-cols-6 gap-4 absolute inset-x-0 bottom-0 h-full"> {/* Added gap-4 to match service grid, removed px-4, used inset-x-0 */}
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="flex justify-center relative">
-                    {/* Vertical line extending downwards from the horizontal line */}
-                    <div className="w-px h-4 bg-emerald-500/40 absolute top-full"></div> {/* Adjusted height and position */}
-                </div>
-              ))}
-           </div>
-        </div>
-
-        {/* --- SERVICE GRID --- */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative z-20">
-          <ServiceCard hasRepo title="Pidgiemon" subtitle="Minecraft VM" port="Port: 25565" icon="🧱" colorClass="bg-green-500" onClick={() => handleCardClick("Pidgiemon")} />
-          <ServiceCard hasRepo title="iAMLegendary" subtitle="DayZ VM" port="Port: 2302" icon="🧟" colorClass="bg-slate-400" onClick={() => handleCardClick("DayZ")} />
-          <div className="relative flex flex-col items-center">
-            <ServiceCard title="Active Directory" subtitle="Hybrid Domain" port="RDS / AD DS" icon="🪟" colorClass="bg-blue-600" onClick={() => handleCardClick("Windows Domain")} />
-            <div className="absolute top-[100%] w-px h-[250px] bg-red-500/40 z-0">
-               <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-[#020617] px-2 text-[8px] font-black text-red-400 border border-red-500/30 rounded uppercase">SSO</div>
-            </div>
-          </div>
-          <ServiceCard hasRepo title="M.I.T.C.H" subtitle="Local AI" port="Port: 8080" icon="🤖" colorClass="bg-orange-500" onClick={() => handleCardClick("M.I.T.C.H")} />
-          <ServiceCard title="FileBrowser" subtitle="Public Share" port="Port: Various" icon="📁" colorClass="bg-blue-400" onClick={() => handleCardClick("FileBrowser")} />
-          <ServiceCard hasRepo title="MitchMesh" subtitle="LoRa Drone" port="Isolated" icon="📡" colorClass="bg-cyan-500" onClick={() => handleCardClick("MitchMesh")} />
-        </div>
-
-        {/* --- ORANGE BUS (BOTTOM ANCHOR) --- */}
-        {/* This bus bar is positioned below the service grid and its vertical lines extend upwards to connect. */}
-        <div className="relative w-full h-8 mt-2 mb-16"> {/* Removed max-w-6xl mx-auto, adjusted height, added mt-2 for spacing */}
-           {/* Horizontal line at the top of this container */}
-           <div className="absolute top-0 left-0 right-0 h-px bg-orange-500/40"></div>
-           {/* Vertical lines container. Aligned with the horizontal line and service grid columns. */}
-           <div className="grid grid-cols-6 gap-4 absolute inset-x-0 top-0 h-full"> {/* Added gap-4 to match service grid, removed px-4, used inset-x-0 */}
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="flex justify-center relative">
-                   { (i === 0 || i === 1 || i === 3 || i === 5) && <div className="w-px h-4 bg-orange-500/40 absolute bottom-full"></div> } {/* Adjusted height and position */}
-                </div>
-              ))}
-           </div>
-        </div>
-
-        {/* --- HARDWARE FOOTER --- */}
-        <div className="p-10 border border-white/10 rounded-[3rem] bg-gradient-to-b from-white/[0.03] to-transparent relative mt-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
-            <div className="text-left max-w-xs">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-orange-500 font-black text-2xl">X</span>
-                <h2 className="text-xl font-bold text-white tracking-tight uppercase">Proxmox Cluster</h2>
-              </div>
-              <p className="text-slate-500 text-[10px] uppercase tracking-widest font-black opacity-70">HA • ZFS • Cloud Backup</p>
-            </div>
-            <div className="flex items-center gap-8">
-               <div onClick={() => handleCardClick("LDAP SSO", { title: "LDAP Integration", subtitle: "SSO Bridge", icon: "🔐", description: "Active Directory authentication for the Proxmox Cluster." })} 
-                    className="bg-red-500/10 border border-red-500/40 px-6 py-4 rounded-3xl text-center relative cursor-pointer hover:bg-red-500/20 transition-all">
-                  <div className="text-xl mb-1">🔐</div>
-                  <p className="text-red-400 font-black text-[10px] uppercase tracking-widest">LDAP SSO</p>
-                  <div className="absolute top-0 left-1/2 w-px h-4 bg-red-500/40 -translate-y-full"></div>
-               </div>
-               <div className="flex gap-4">
-                 <ProxmoxNode nodeName="Node 1" status="Online" />
-                 <ProxmoxNode nodeName="Node 2" status="Online" />
-                 <ProxmoxNode nodeName="Node 3" status="Online" />
-               </div>
-            </div>
-            <div onClick={() => handleCardClick("Storage", { title: "ZFS Storage Pool", subtitle: "Fault Tolerant Storage", icon: "🛢️", specs: ["RAID-Z2 Configuration", "GDrive Snapshot Replication", "M365 Backup Destination"] })}
-                 className="group bg-emerald-500/10 border border-emerald-500/20 p-8 rounded-3xl text-center min-w-[180px] relative cursor-pointer hover:bg-emerald-500/20 transition-all">
-              <div className="text-2xl mb-1">🛢️</div>
-              <p className="text-white font-bold text-xs uppercase tracking-tighter">ZFS STORAGE</p>
-              <p className="text-emerald-400 text-[10px] font-bold italic mt-2">Sync Active</p>
-              <div className="absolute top-1/2 right-0 w-[55px] h-px bg-emerald-500/40 translate-x-full"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* --- CONNECTION JOURNEY RESTORED --- */}
-        <div className="mt-16 max-w-5xl mx-auto pt-8 border-t border-white/5">
-          <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-slate-500 mb-10 text-center">The Connection Journey</h3>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative">
-            <div className="hidden md:block absolute top-6 left-0 w-full h-px bg-gradient-to-r from-blue-500/10 via-emerald-500/40 to-blue-500/10"></div>
-            {[
-              { step: "01", label: "DNS Lookup", desc: "andymitchell.online", color: "text-blue-400" },
-              { step: "02", label: "WAF Filter", desc: "Cloudflare Edge", color: "text-orange-400" },
-              { step: "03", label: "ISP Entry", desc: "YouFibre Static IP", color: "text-red-400" },
-              { step: "04", label: "Routing", desc: "Nginx SSL Handoff", color: "text-emerald-400" },
-              { step: "05", label: "Service", desc: "Proxmox VM/LXC", color: "text-blue-400" }
-            ].map((item, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-center group flex-1">
-                <div className={`w-12 h-12 rounded-full bg-[#020617] border border-white/20 flex items-center justify-center text-[11px] font-black mb-3 group-hover:border-white/50 transition-all ${item.color} shadow-lg`}>{item.step}</div>
-                <p className="text-white font-bold text-sm mb-1 uppercase tracking-tight">{item.label}</p>
-                <p className="text-[10px] text-slate-500 font-mono italic uppercase tracking-tighter whitespace-nowrap">{item.desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </main>
+          <div className="flex items-center gap-3 rounded-md bg-white/70 p-3">
+            <div className="h-10 w-10 rounded-full bg-blue-500" />
+            <div>
+              <div className="text-[10px] font-black">ZFS Storage</div>
+              <div className="text-[10px]">Redundant</div>
+              <div className="text-[10px] font-bold text-emerald-600">Fast</div>
+            </div>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onSelect("raspberry")}
+          className="mx-auto mt-7 flex max-w-[300px] items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-rose-300 hover:shadow-md"
+        >
+          <LogoBadge className="rounded-lg border-rose-200 bg-rose-50 text-rose-700">PI</LogoBadge>
+          <div>
+            <div className="text-sm font-black">Raspberry Pi</div>
+            <div className="text-[10px] font-semibold">The Home Core</div>
+            <div className="mt-1 text-[10px] text-slate-500">Always on. Always here.</div>
+          </div>
+        </button>
+      </div>
+    </section>
+  );
+}
+
+export default function App() {
+  const [selected, setSelected] = useState("proxmox");
+  const current = useMemo(() => components[selected], [selected]);
+
+  return (
+    <div className="min-h-screen bg-[#081421] text-slate-200">
+      <div className="mx-auto min-h-screen max-w-[1420px] overflow-hidden rounded-none border border-slate-700/60 bg-[#0b1828] shadow-2xl lg:my-1 lg:rounded-xl">
+        <Nav />
+        <main id="overview" className="bg-[radial-gradient(circle_at_35%_0%,rgba(37,99,235,0.22),transparent_38%),linear-gradient(180deg,#0c1c2f_0%,#07111f_100%)] px-6 py-8">
+          <section className="mx-auto max-w-[1320px]">
+            <div className="mb-7">
+              <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">
+                One Home. <span className="italic">One IP.</span> Endless Possibilities.
+              </h1>
+              <p className="mt-3 max-w-xl text-base leading-7 text-slate-300">
+                A self-hosted infrastructure running 24/7 from home, built with open source and zero cloud costs.
+              </p>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-[1fr_330px]">
+              <Diagram onSelect={setSelected} />
+              <div>
+                <DetailPanel selected={selected} onClose={() => setSelected("proxmox")} />
+                <p className="mt-5 px-4 text-center text-xs leading-5 text-slate-400">
+                  Hover over or click any component to learn more about how it works.
+                </p>
+              </div>
+            </div>
+
+            <section id="connect" className="mt-8 rounded-xl border border-white/10 bg-[#0a1726]/80 p-5">
+              <h2 className="mb-5 text-sm font-black text-white">How to Connect</h2>
+              <div className="grid gap-7 lg:grid-cols-[1fr_290px]">
+                <div className="flex flex-col items-center gap-5 md:flex-row">
+                  <ConnectionStep number="1" label="Visit" sub="homelabos.com" />
+                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
+                  <ConnectionStep number="2" label="Secure Access" sub="SSL via Nginx" />
+                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
+                  <ConnectionStep number="3" label="Choose a Service" sub="Minecraft, Mitch, tools" />
+                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
+                  <ConnectionStep number="4" label="Authenticate" sub="Entra ID SSO" />
+                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
+                  <ConnectionStep number="5" label="You're In" sub="Enjoy the experience" />
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+                  <div className="text-lg font-black text-emerald-400">Zero Cost. Full Control.</div>
+                  <p className="mt-4 text-sm leading-6 text-slate-300">
+                    Built with open source. Hosted at home. Available to the world.
+                  </p>
+                  <p className="mt-4 text-sm font-semibold text-white">This is what's possible.</p>
+                </div>
+              </div>
+            </section>
+          </section>
+        </main>
+      </div>
+      <span className="sr-only">{current.title}</span>
     </div>
   );
 }
