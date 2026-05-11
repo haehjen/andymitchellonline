@@ -174,6 +174,41 @@ function ExternalCard({ id, children, onSelect }) {
   );
 }
 
+function FlowCard({ id, image, imageClass, onSelect }) {
+  const item = components[id];
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(id)}
+      className="w-full rounded-lg border border-slate-200 bg-white px-6 py-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+    >
+      <img src={image} alt="" className={`mx-auto object-contain ${imageClass}`} />
+      <div className="mt-3 text-[10px] font-black uppercase tracking-wide text-slate-900">{item.title}</div>
+      <div className="mt-1 text-[9px] font-semibold text-slate-500">{item.subtitle}</div>
+    </button>
+  );
+}
+
+function FlowConnector() {
+  return (
+    <div className="flex h-7 items-center justify-center">
+      <div className="h-full w-px bg-blue-400" />
+    </div>
+  );
+}
+
+function ServerIcon() {
+  return (
+    <div className="relative h-10 w-14 rounded-md border border-slate-500 bg-gradient-to-b from-slate-700 to-slate-900 shadow-md">
+      <div className="absolute left-2 top-2 h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+      <div className="absolute left-5 top-2 h-1 w-6 rounded bg-slate-500" />
+      <div className="absolute left-2 right-2 top-5 h-px bg-slate-600" />
+      <div className="absolute bottom-2 left-2 h-1 w-9 rounded bg-slate-600" />
+    </div>
+  );
+}
+
 function ServiceCard({ id, onSelect }) {
   const item = components[id];
   return (
@@ -259,15 +294,15 @@ function Diagram({ onSelect }) {
           <div className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-[10px] font-black uppercase tracking-wide text-blue-700">
             Public Internet
           </div>
-          <div className="h-6 w-px bg-blue-400" />
-          <div className="grid w-full max-w-[760px] gap-4 md:grid-cols-3">
+          <FlowConnector />
+          <div className="flex w-full max-w-[300px] flex-col items-center">
             {ingressFlow.map((item) => (
-              <ExternalCard key={item.id} id={item.id} onSelect={onSelect}>
-                <img src={item.image} alt="" className={`mx-auto object-contain ${item.imageClass}`} />
-              </ExternalCard>
+              <React.Fragment key={item.id}>
+                <FlowCard id={item.id} image={item.image} imageClass={item.imageClass} onSelect={onSelect} />
+                <FlowConnector />
+              </React.Fragment>
             ))}
           </div>
-          <div className="h-7 w-px bg-blue-400" />
         </div>
 
         <div className="mx-auto max-w-[360px]">
@@ -310,7 +345,7 @@ function Diagram({ onSelect }) {
           <div className="grid gap-4 sm:grid-cols-3">
             {["Node 1", "Node 2", "Node 3"].map((node) => (
               <div key={node} className="flex items-center gap-3 rounded-md bg-white/70 p-3">
-                <div className="h-9 w-12 rounded bg-slate-700 shadow-inner" />
+                <ServerIcon />
                 <div>
                   <div className="text-[10px] font-black">HP ProLiant</div>
                   <div className="text-[10px]">ML350 Gen9</div>
