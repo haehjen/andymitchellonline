@@ -244,6 +244,214 @@ const mitchModules = [
   },
 ];
 
+const mitchCapabilityModules = [
+  {
+    name: "automated_flight_tracker.py",
+    role: "Airspace Watcher",
+    text: "Polls flight state data, filters contacts by region and interest, then publishes a decluttered JSON view for visual overlays.",
+  },
+  {
+    name: "flight_tracker.py",
+    role: "Flight Query",
+    text: "Answers user flight questions from the published contact cache. It hooks normal input so aviation status can be queried conversationally.",
+  },
+  {
+    name: "proxmon.py",
+    role: "Proxmox Control",
+    text: "Talks to the Proxmox API for VM status and restart actions. Registered intents turn natural requests into infrastructure operations.",
+  },
+  {
+    name: "weather_fetcher.py",
+    role: "Weather Skill",
+    text: "Fetches weather data for spoken or typed locations and emits concise responses back through Mitch's event and speech pipeline.",
+  },
+  {
+    name: "web_search.py",
+    role: "Web Search",
+    text: "Provides a search tool surface for current information. Results can be emitted as tool output or fed back into chat context.",
+  },
+  {
+    name: "news_digester.py",
+    role: "News Digest",
+    text: "Tracks conversation and heartbeat events, refreshes topic searches, and produces digest-style summaries instead of raw article dumps.",
+  },
+  {
+    name: "protest_tracker.py",
+    role: "Civic Monitor",
+    text: "Runs on heartbeat and maintains a watch layer for protest-related information, making public activity available to the assistant.",
+  },
+  {
+    name: "file_ingestor.py",
+    role: "File Intake",
+    text: "Classifies uploaded files, extracts text from PDFs, HTML, images, and plain text, then converts files into usable context.",
+  },
+  {
+    name: "folder_access.py",
+    role: "Folder Access",
+    text: "Provides a controlled file-system access module so Mitch can inspect known folders without exposing the whole host casually.",
+  },
+  {
+    name: "system_interaction_enhancer.py",
+    role: "File Operations",
+    text: "Implements directory listing, file creation, and deletion events. Actions are logged as context changes for traceability.",
+  },
+  {
+    name: "module_editor.py",
+    role: "Core Edit Bridge",
+    text: "The core editor handles bounded code changes; this module layer uses that pattern for controlled self-extension workflows.",
+  },
+  {
+    name: "dynamic_intent_creator.py",
+    role: "Intent Creation",
+    text: "Watches failed intent matches and can create new dynamic intent definitions so repeated unknown commands become routable.",
+  },
+  {
+    name: "dynamic_intent_updater.py",
+    role: "Intent Refinement",
+    text: "Listens for failed matches and updates intent data, improving how Mitch maps future user language onto actions.",
+  },
+  {
+    name: "skills_catalog.py",
+    role: "Skill Index",
+    text: "Collects user-facing registered intents and renders a summary of what Mitch can do, giving the assistant a discoverable command surface.",
+  },
+  {
+    name: "goal_tracker.py",
+    role: "Goals",
+    text: "Stores goals, progress updates, status checks, and clears. Each operation is exposed through registered intent handlers.",
+  },
+  {
+    name: "task_automator.py",
+    role: "Tasks",
+    text: "Creates and manages task-style actions through event handlers, turning spoken planning requests into structured system state.",
+  },
+  {
+    name: "task_scheduler.py",
+    role: "Scheduler",
+    text: "Schedules task events and adjusts timing through the event bus, giving Mitch a lightweight background automation loop.",
+  },
+  {
+    name: "personalized_scheduler.py",
+    role: "Personal Timing",
+    text: "Consumes user activity signals and adapts recommendations around observed usage, rather than treating every reminder as static.",
+  },
+  {
+    name: "habit_inspector.py",
+    role: "Habits",
+    text: "Logs habit events and runs simple habit analysis, making behavioural patterns available to the assistant.",
+  },
+  {
+    name: "user_engagement_tracker.py",
+    role: "Engagement",
+    text: "Tracks user interaction signals that other modules can use to decide whether to speak, wait, summarize, or stay quiet.",
+  },
+  {
+    name: "user_feedback_collector.py",
+    role: "Feedback",
+    text: "Captures user feedback as structured data so future responses and behaviours can be tuned from real interaction.",
+  },
+  {
+    name: "user_prompt_inbox.py",
+    role: "Prompt Inbox",
+    text: "Stores and processes inbound prompts as a queue, giving remote or deferred inputs a place to wait before handling.",
+  },
+  {
+    name: "proactive_notifier.py",
+    role: "Proactive Alerts",
+    text: "Combines heartbeat, alert, and digest events to decide when Mitch should interrupt with a useful notification.",
+  },
+  {
+    name: "on_heartbeat_inactive.py",
+    role: "Idle Awareness",
+    text: "Tracks last input and heartbeat state so Mitch can respond differently when the system has been quiet for a while.",
+  },
+  {
+    name: "publish_logs.py",
+    role: "Digest Publisher",
+    text: "Tails logs, memory, knowledge, and inner monologue into compact published digests for the visual layer and notifier modules.",
+  },
+  {
+    name: "inspection_log_digester.py",
+    role: "Inspection Digest",
+    text: "Summarizes inspection logs into smaller digest records that can be reused by reflective and visual systems.",
+  },
+  {
+    name: "reflective_analyzer.py",
+    role: "Reflection",
+    text: "Consumes inspection digest events and turns them into analysis, giving Mitch a lightweight self-review loop.",
+  },
+  {
+    name: "decision_maker.py",
+    role: "Decision Helper",
+    text: "Handles explicit decision requests, scoring options and emitting a decision response through the event bus.",
+  },
+  {
+    name: "resource_optimizer.py",
+    role: "Resource Advice",
+    text: "Responds to system health events and suggests optimizations when resources or operating conditions look poor.",
+  },
+  {
+    name: "system_health_monitor.py",
+    role: "Health Monitor",
+    text: "Checks system health on demand and exposes that check as an intent so Mitch can report operational status.",
+  },
+  {
+    name: "route_planner.py",
+    role: "Route Planning",
+    text: "Accepts coordinate route events and produces route geometry, a useful primitive for field systems like MitchMesh.",
+  },
+  {
+    name: "geocode.py",
+    role: "Geocoding",
+    text: "Converts place names into coordinates so human language can become location data for routes, weather, and field actions.",
+  },
+  {
+    name: "rtsp_stream.py",
+    role: "RTSP Video",
+    text: "Maintains an RTSP stream module with start and shutdown hooks, giving Mitch a live-video source when enabled.",
+  },
+  {
+    name: "visual/visual_web.py",
+    role: "Visual Server",
+    text: "Serves the browser-based visual interface and static camera/map assets used by the orb and situational displays.",
+  },
+  {
+    name: "visual/orb.html + main.js",
+    role: "Orb Interface",
+    text: "Implements the visual front-end for Mitch: animated orb, browser-side state, audio hooks, and live presentation surfaces.",
+  },
+  {
+    name: "nssr_designer.py",
+    role: "NSSR Designer",
+    text: "Processes file-ready and speech-end events to support a design workflow module with its own internal state machine.",
+  },
+  {
+    name: "youtube_music_skill.py",
+    role: "Music Skill",
+    text: "Registers music intents and drives YouTube-based playback behaviour from conversational commands.",
+  },
+  {
+    name: "imdb_intent.py",
+    role: "IMDb Skill",
+    text: "Searches IMDb-style pages, extracts structured metadata and relevant excerpts, then augments chat with focused film context.",
+  },
+  {
+    name: "pokemon_wiki_intent.py",
+    role: "Pokemon Wiki",
+    text: "Searches wiki content, strips markup, extracts relevant lines, and feeds concise Pokemon context back into chat.",
+  },
+  {
+    name: "tarkov_wiki_intent.py",
+    role: "Tarkov Wiki",
+    text: "Searches Tarkov wiki pages and pulls focused quest/objective excerpts so Mitch can answer game-specific questions.",
+  },
+  {
+    name: "bannerlord_wiki_intent.py",
+    role: "Bannerlord Wiki",
+    text: "Runs a Bannerlord-specific wiki search and excerpt pipeline, turning fandom/wiki pages into useful chat context.",
+  },
+];
+
 function Nav() {
   return (
     <header className="border-b border-white/5 bg-[#07111f]/90">
@@ -259,7 +467,7 @@ function Nav() {
         </div>
         <nav className="hidden items-center gap-9 text-xs font-semibold text-slate-300 md:flex">
           <a className="border-b-2 border-blue-500 pb-3 text-blue-300" href="#overview">Overview</a>
-          <a href="#how">How It Works</a>
+          <a href="https://mitch.andymitchell.online">M.I.T.C.H</a>
           <a href="#blog">Blog</a>
           <a href="#about">About</a>
         </nav>
@@ -647,6 +855,25 @@ function MitchPage() {
                     <MitchModuleCard key={module.name} module={module} index={index} />
                   ))}
                 </div>
+              </div>
+            </section>
+
+            <section className="mt-8 rounded-xl border border-white/10 bg-[#0a1726]/80 p-4 shadow-2xl sm:p-7">
+              <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.24em] text-orange-300">Capability Modules</p>
+                  <h2 className="mt-2 text-2xl font-black text-white">The skills Mitch can run around the core.</h2>
+                </div>
+                <p className="max-w-xl text-xs leading-5 text-slate-400">
+                  Core modules make Mitch think, speak, listen, remember, and route events. These modules are the practical tools:
+                  infrastructure control, search, file intake, monitoring, game knowledge, schedules, and visual systems.
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {mitchCapabilityModules.map((module, index) => (
+                  <MitchModuleCard key={module.name} module={module} index={index} />
+                ))}
               </div>
             </section>
           </section>
