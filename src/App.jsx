@@ -126,6 +126,8 @@ const accent = {
   red: "border-rose-200 text-rose-700 bg-rose-50",
 };
 
+const publicRepoComponents = new Set(["cloudflare", "minecraft", "dayz", "mitch"]);
+
 function Nav() {
   return (
     <header className="border-b border-white/5 bg-[#07111f]/90">
@@ -159,6 +161,18 @@ function LogoBadge({ children, className = "" }) {
   );
 }
 
+function GitHubBadge() {
+  return (
+    <span
+      className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-full border border-slate-200 bg-white shadow-sm"
+      title="Public GitHub repository"
+      aria-label="Public GitHub repository"
+    >
+      <img src="/github.svg" alt="" className="h-3.5 w-3.5" />
+    </span>
+  );
+}
+
 function ExternalCard({ id, children, onSelect }) {
   const item = components[id];
   return (
@@ -176,13 +190,15 @@ function ExternalCard({ id, children, onSelect }) {
 
 function FlowCard({ id, image, imageClass, onSelect }) {
   const item = components[id];
+  const hasPublicRepo = publicRepoComponents.has(id);
 
   return (
     <button
       type="button"
       onClick={() => onSelect(id)}
-      className="w-full rounded-lg border border-slate-200 bg-white px-6 py-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+      className="relative w-full rounded-lg border border-slate-200 bg-white px-6 py-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
     >
+      {hasPublicRepo && <GitHubBadge />}
       <img src={image} alt="" className={`mx-auto object-contain ${imageClass}`} />
       <div className="mt-3 text-[10px] font-black uppercase tracking-wide text-slate-900">{item.title}</div>
       <div className="mt-1 text-[9px] font-semibold text-slate-500">{item.subtitle}</div>
@@ -211,12 +227,15 @@ function ServerIcon() {
 
 function ServiceCard({ id, onSelect }) {
   const item = components[id];
+  const hasPublicRepo = publicRepoComponents.has(id);
+
   return (
     <button
       type="button"
       onClick={() => onSelect(id)}
       className="relative rounded-lg border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
     >
+      {hasPublicRepo && <GitHubBadge />}
       <LogoBadge className={`mx-auto mb-3 h-10 w-10 ${accent[item.accent]}`}>{item.icon}</LogoBadge>
       <div className="text-xs font-black text-slate-900">{item.title}</div>
       <div className="mt-1 text-[10px] font-semibold text-slate-500">{item.subtitle}</div>
