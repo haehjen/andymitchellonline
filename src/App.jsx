@@ -469,7 +469,7 @@ function Nav() {
           <a className="border-b-2 border-blue-500 pb-3 text-blue-300" href="#overview">Overview</a>
           <a href="https://mitch.andymitchell.online">M.I.T.C.H</a>
           <a href="#blog">Blog</a>
-          <a href="#about">About</a>
+          <a href="/about">About</a>
         </nav>
       </div>
     </header>
@@ -883,6 +883,118 @@ function MitchPage() {
   );
 }
 
+function AboutSignalCard({ title, eyebrow, children }) {
+  return (
+    <article className="rounded-lg border border-slate-700/70 bg-[#0d1a2a]/95 p-5 shadow-xl shadow-black/10">
+      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-cyan-300">{eyebrow}</p>
+      <h3 className="mt-2 text-lg font-black text-white">{title}</h3>
+      <p className="mt-3 text-sm leading-6 text-slate-300">{children}</p>
+    </article>
+  );
+}
+
+function AboutPhotoPanel({ title, subtitle, tone = "blue" }) {
+  const tones = {
+    blue: "from-blue-500/25 via-slate-900 to-cyan-400/10 border-blue-300/30",
+    amber: "from-amber-500/25 via-slate-900 to-orange-400/10 border-amber-300/30",
+    green: "from-emerald-500/25 via-slate-900 to-cyan-400/10 border-emerald-300/30",
+  };
+
+  return (
+    <div className={`relative min-h-[260px] overflow-hidden rounded-xl border bg-gradient-to-br ${tones[tone]} p-5 shadow-2xl`}>
+      <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px]" />
+      <div className="absolute right-[-24px] top-[-24px] h-32 w-32 rounded-full border border-white/10 bg-white/5" />
+      <div className="absolute bottom-[-40px] left-[-30px] h-40 w-40 rounded-full border border-white/10 bg-white/5" />
+      <div className="relative flex h-full min-h-[220px] flex-col justify-end">
+        <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-300">{subtitle}</p>
+        <h3 className="mt-2 text-2xl font-black text-white">{title}</h3>
+      </div>
+    </div>
+  );
+}
+
+function AboutPage() {
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#081421] text-slate-200">
+      <div className="mx-auto min-h-screen max-w-[1420px] overflow-hidden rounded-none border border-slate-700/60 bg-[#0b1828] shadow-2xl lg:my-1 lg:rounded-xl">
+        <Nav />
+        <main className="bg-[radial-gradient(circle_at_30%_6%,rgba(37,99,235,0.24),transparent_34%),linear-gradient(180deg,#0c1c2f_0%,#07111f_100%)] px-4 py-6 sm:px-6 sm:py-8">
+          <section className="mx-auto max-w-[1180px]">
+            <a href="/" className="mb-6 inline-flex items-center text-xs font-bold text-blue-300 hover:text-blue-200">
+              Back to infrastructure
+            </a>
+
+            <div className="grid gap-8 lg:grid-cols-[1fr_430px] lg:items-center">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-cyan-300">About</p>
+                <h1 className="mt-3 text-4xl font-black tracking-tight text-white md:text-6xl">
+                  Field, workshop, terminal.
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+                  I am an IT engineer based in the North East of England. I train raptors, work with Able,
+                  my Belgian Malinois, hike the Wainwrights, and spend the rest of my time building things:
+                  soldering in the workshop, scripting at the keyboard, and planning systems that bridge the physical
+                  world with the digital one.
+                </p>
+                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+                  This site exists because I built something I am proud of: Mitch. I used to try to build a website
+                  other people would say was cool. This time I built one for me.
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                <AboutPhotoPanel title="Able" subtitle="Belgian Malinois" tone="amber" />
+                <AboutPhotoPanel title="Dulcea" subtitle="Gyr x Peregrine Falcon" tone="green" />
+              </div>
+            </div>
+
+            <section className="mt-10 grid gap-4 md:grid-cols-3">
+              <AboutSignalCard title="Fieldcraft" eyebrow="Outside">
+                Training Able and Dulcea is a different kind of engineering: patience, timing, feedback, repetition,
+                and trust. The same mindset shows up in the systems I build.
+              </AboutSignalCard>
+              <AboutSignalCard title="Workshop" eyebrow="Hardware">
+                ESP32 boards, LoRa radios, GPS modules, power regulation, solder, and field gear. MitchMesh is where
+                software stops being abstract and starts moving through the real world.
+              </AboutSignalCard>
+              <AboutSignalCard title="Infrastructure" eyebrow="Systems">
+                Proxmox, Nginx, Cloudflare, local AI, public services, and a self-hosted stack running from home.
+                This page is the map of that platform.
+              </AboutSignalCard>
+            </section>
+
+            <section className="mt-8 rounded-xl border border-white/10 bg-slate-950/40 p-5 shadow-2xl sm:p-7">
+              <div className="grid gap-8 lg:grid-cols-[320px_1fr] lg:items-center">
+                <div className="flex h-64 flex-col items-center justify-center rounded-full border border-cyan-300/40 bg-[radial-gradient(circle,rgba(34,211,238,0.22),rgba(37,99,235,0.12)_48%,rgba(15,23,42,0.95)_72%)] text-center shadow-[0_0_70px_rgba(34,211,238,0.2)]">
+                  <div className="text-[11px] font-black uppercase tracking-[0.26em] text-cyan-200">Built For Me</div>
+                  <div className="mt-2 text-4xl font-black text-white">MITCH</div>
+                  <div className="mt-3 max-w-[190px] text-[11px] leading-5 text-slate-300">
+                    A local intelligence layer for voice, vision, memory, tools, hardware, and field systems.
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.24em] text-orange-300">Why this exists</p>
+                  <h2 className="mt-2 text-2xl font-black text-white">A portfolio, but not polished into someone else's shape.</h2>
+                  <p className="mt-4 text-sm leading-7 text-slate-300">
+                    Mitch is the centre of the stack: an event-driven assistant that talks to local services, keeps memory,
+                    handles speech and vision, and reaches into physical projects like MitchMesh. The infrastructure page
+                    shows the system around it. The Mitch page opens the engine bay.
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-slate-300">
+                    The point is not to make a generic personal site. It is to show the actual architecture, the things I care
+                    about, and the strange overlap between falconry, hiking, hardware, automation, and self-hosted AI.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </section>
+        </main>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [selected, setSelected] = useState("proxmox");
   const current = useMemo(() => components[selected], [selected]);
@@ -890,6 +1002,10 @@ export default function App() {
 
   if (path === "/mitch" || path === "/mitch/") {
     return <MitchPage />;
+  }
+
+  if (path === "/about" || path === "/about/") {
+    return <AboutPage />;
   }
 
   return (
