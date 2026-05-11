@@ -337,7 +337,7 @@ function DetailPanel({ selected, onClose }) {
   );
 }
 
-function Diagram({ onSelect }) {
+function Diagram({ selected, onSelect }) {
   const services = ["minecraft", "dayz", "mitch", "filebrowser", "mitchmesh", "raspberry"];
   const serviceRailRef = useRef(null);
   const ingressFlow = [
@@ -399,16 +399,18 @@ function Diagram({ onSelect }) {
           >
             ‹
           </button>
-          <div
-            ref={serviceRailRef}
-            className="flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] md:grid md:overflow-visible md:pb-0 md:grid-cols-3 xl:grid-cols-6"
-          >
-            {services.map((service) => (
-              <div key={service} className="relative min-w-0 flex-[0_0_100%] snap-center md:flex-auto">
-                <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
-                <ServiceCard id={service} onSelect={onSelect} />
-              </div>
-            ))}
+          <div className="px-11 md:px-0">
+            <div
+              ref={serviceRailRef}
+              className="flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] md:grid md:overflow-visible md:pb-0 md:grid-cols-3 xl:grid-cols-6"
+            >
+              {services.map((service) => (
+                <div key={service} className="relative min-w-0 flex-[0_0_100%] snap-center md:flex-auto">
+                  <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
+                  <ServiceCard id={service} onSelect={onSelect} />
+                </div>
+              ))}
+            </div>
           </div>
           <button
             type="button"
@@ -418,6 +420,10 @@ function Diagram({ onSelect }) {
           >
             ›
           </button>
+        </div>
+
+        <div className="mt-6 lg:hidden">
+          <DetailPanel selected={selected} onClose={() => onSelect("proxmox")} />
         </div>
 
         <button
@@ -485,8 +491,8 @@ export default function App() {
             </div>
 
             <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
-              <Diagram onSelect={setSelected} />
-              <div className="min-w-0">
+              <Diagram selected={selected} onSelect={setSelected} />
+              <div className="hidden min-w-0 lg:block">
                 <DetailPanel selected={selected} onClose={() => setSelected("proxmox")} />
                 <p className="mt-5 px-4 text-center text-xs leading-5 text-slate-400">
                   Hover over or click any component to learn more about how it works.
