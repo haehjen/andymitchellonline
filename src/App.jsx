@@ -80,6 +80,7 @@ const components = {
       "Local AI workloads sit behind the reverse proxy so private tools can be reached securely.",
     bullets: ["Port 8080", "Local inference", "Private tools", "Controlled access"],
     note: "Mitch is the local intelligence layer that other systems can call into through a controlled API boundary.",
+    readMoreHref: "/mitch",
   },
   filebrowser: {
     title: "FileBrowser",
@@ -159,6 +160,89 @@ const accent = {
 };
 
 const publicRepoComponents = new Set(["cloudflare", "minecraft", "dayz", "mitch", "mitchmesh", "raspberry"]);
+
+const mitchModules = [
+  {
+    name: "gpt_handler.py",
+    role: "LLM Router",
+    text: "Builds system prompts from persona, memory, and active injections. Streams through Ollama or OpenAI, emits token events, and bridges normal chat into contextual event streams.",
+  },
+  {
+    name: "event_bus.py",
+    role: "Event Spine",
+    text: "Central pub/sub layer for EMIT_* traffic. It normalizes common payloads, records emitter/subscriber relationships, and keeps modules decoupled.",
+  },
+  {
+    name: "event_registry.py",
+    role: "Intent Map",
+    text: "Tracks emitted/subscribed events and scores human text against registered intents. Guards against vague keywords so actions do not trigger on weak matches.",
+  },
+  {
+    name: "interpreter.py",
+    role: "Input Brainstem",
+    text: "Receives text from users and HouseCore, deduplicates prompts, matches intents first, then escalates ambiguous input to chat generation.",
+  },
+  {
+    name: "dispatcher.py",
+    role: "Action Dispatcher",
+    text: "Handles structured user intents such as drone launch and visual inspection. Unknown dynamic intents are routed through injection-defined events.",
+  },
+  {
+    name: "memory.py",
+    role: "Continuity Store",
+    text: "Persists conversation turns to JSONL and stores tagged knowledge facts. Recent memory and identity facts are recalled into prompt context.",
+  },
+  {
+    name: "persona.py",
+    role: "Identity Kernel",
+    text: "Loads the locked persona, emotion state, recent memory, known facts, and event summaries. Produces the system prompt that keeps Mitch consistent.",
+  },
+  {
+    name: "ears.py",
+    role: "Audio Intake",
+    text: "Continuously captures microphone audio, pauses while Mitch speaks, and emits audio files into the event bus for transcription.",
+  },
+  {
+    name: "transcriber.py",
+    role: "Speech to Text",
+    text: "Processes captured WAV files with speech recognition, rejects duplicate phrases, cleans up temp files, and emits clean user input.",
+  },
+  {
+    name: "stream_mouth.py",
+    role: "Voice Output",
+    text: "Buffers streamed text chunks, synthesizes speech with Piper, plays audio through PyAudio, and emits browser audio chunks when enabled.",
+  },
+  {
+    name: "vision.py",
+    role: "Camera Capture",
+    text: "Controls host camera exposure with v4l2 settings, captures frames through OpenCV, and writes the latest image for visual modules.",
+  },
+  {
+    name: "vision_ai.py",
+    role: "Visual Reasoning",
+    text: "Uses fresh browser camera frames or host capture fallback, then asks GPT-4o to describe scenes or identify objects from the camera URL.",
+  },
+  {
+    name: "module_editor.py",
+    role: "Code Mutation Guard",
+    text: "Creates, reads, and edits modules only inside MITCH_ROOT. Edits are backed up and path checks prevent writes outside the project boundary.",
+  },
+  {
+    name: "peterjones.py",
+    role: "Inner Log",
+    text: "Creates shared rotating/file loggers and wildcard event logging. Noisy events and modules are suppressed unless debug mode is enabled.",
+  },
+  {
+    name: "keys_loader.py",
+    role: "Secret Loader",
+    text: "Loads environment keys from the local mitchskeys file, supporting shell-style exports without overwriting variables already present.",
+  },
+  {
+    name: "config.py",
+    role: "Runtime Config",
+    text: "Defines MITCH_ROOT and debug flags from environment variables so modules share the same runtime base path and diagnostics mode.",
+  },
+];
 
 function Nav() {
   return (
@@ -503,9 +587,83 @@ function Diagram({ selected, onSelect }) {
   );
 }
 
+function MitchModuleCard({ module, index }) {
+  return (
+    <article className="relative rounded-lg border border-slate-700/70 bg-[#0d1a2a]/95 p-4 shadow-xl shadow-black/10">
+      <div className="absolute left-1/2 top-[-28px] hidden h-7 w-px -translate-x-1/2 bg-cyan-400/50 lg:block" />
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div>
+          <div className="font-mono text-[11px] font-bold text-cyan-300">{module.name}</div>
+          <h3 className="mt-1 text-sm font-black text-white">{module.role}</h3>
+        </div>
+        <span className="grid h-7 w-7 shrink-0 place-items-center rounded border border-cyan-400/30 bg-cyan-400/10 text-[10px] font-black text-cyan-200">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+      <p className="text-xs leading-5 text-slate-300">{module.text}</p>
+    </article>
+  );
+}
+
+function MitchPage() {
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#081421] text-slate-200">
+      <div className="mx-auto min-h-screen max-w-[1420px] overflow-hidden rounded-none border border-slate-700/60 bg-[#0b1828] shadow-2xl lg:my-1 lg:rounded-xl">
+        <Nav />
+        <main className="bg-[radial-gradient(circle_at_50%_12%,rgba(14,165,233,0.26),transparent_34%),linear-gradient(180deg,#0c1c2f_0%,#07111f_100%)] px-4 py-6 sm:px-6 sm:py-8">
+          <section className="mx-auto max-w-[1180px]">
+            <a href="/" className="mb-6 inline-flex items-center text-xs font-bold text-blue-300 hover:text-blue-200">
+              Back to infrastructure
+            </a>
+
+            <div className="max-w-3xl">
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-cyan-300">Mitch AI Assistant</p>
+              <h1 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">
+                A local intelligence layer built from small event-driven modules.
+              </h1>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 md:text-base">
+                Mitch is not a single script around an LLM. It is a local assistant architecture where input, memory,
+                persona, tools, voice, vision, and field hardware communicate through a shared event spine.
+              </p>
+            </div>
+
+            <section className="mt-10 rounded-xl border border-white/10 bg-slate-950/40 p-4 shadow-2xl sm:p-7">
+              <div className="relative mx-auto max-w-5xl">
+                <div className="mx-auto flex h-52 w-52 flex-col items-center justify-center rounded-full border border-cyan-300/50 bg-[radial-gradient(circle,rgba(34,211,238,0.28),rgba(37,99,235,0.12)_46%,rgba(15,23,42,0.95)_72%)] text-center shadow-[0_0_70px_rgba(34,211,238,0.24)]">
+                  <div className="text-[11px] font-black uppercase tracking-[0.26em] text-cyan-200">LLM Core</div>
+                  <div className="mt-2 text-3xl font-black text-white">MITCH</div>
+                  <div className="mt-2 max-w-[150px] text-[10px] leading-4 text-slate-300">
+                    Persona, memory, tools, events, speech, and vision converge here.
+                  </div>
+                </div>
+
+                <div className="mx-auto mt-8 hidden h-12 max-w-[860px] lg:block">
+                  <div className="mx-auto h-full w-px bg-cyan-400/50" />
+                  <div className="h-px w-full bg-cyan-400/50" />
+                </div>
+
+                <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:mt-0 lg:grid-cols-4">
+                  {mitchModules.map((module, index) => (
+                    <MitchModuleCard key={module.name} module={module} index={index} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          </section>
+        </main>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [selected, setSelected] = useState("proxmox");
   const current = useMemo(() => components[selected], [selected]);
+  const path = window.location.pathname;
+
+  if (path === "/mitch" || path === "/mitch/") {
+    return <MitchPage />;
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#081421] text-slate-200">
