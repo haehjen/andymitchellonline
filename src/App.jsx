@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
 const components = {
   fasthosts: {
@@ -9,6 +9,7 @@ const components = {
     description:
       "Fasthosts is the domain registrar for the public domain before DNS and website traffic are handled by Cloudflare.",
     bullets: ["Domain registration", "Renewal management", "Nameserver delegation", "Registrar control"],
+    note: "Fasthosts owns the registrar layer only. Runtime traffic moves on to Cloudflare and the home-hosted stack.",
   },
   cloudflare: {
     title: "Cloudflare",
@@ -18,6 +19,7 @@ const components = {
     description:
       "Cloudflare handles public DNS, edge protection, and Cloudflare Pages hosting for this site before traffic reaches the home lab.",
     bullets: ["Cloudflare Pages hosts this site", "DNS records", "DDNS automation", "Proxy and WAF rules", "TLS edge security"],
+    note: "This page is built from GitHub and deployed on Cloudflare Pages, while DNS also routes homelab hostnames.",
   },
   youfibre: {
     title: "YouFibre",
@@ -27,6 +29,7 @@ const components = {
     description:
       "YouFibre provides the internet connection. CGNAT is the default, so a paid static IP is used as the mitigation for reliable inbound access.",
     bullets: ["CGNAT by default", "Paid static IP mitigation", "Home fibre connection", "Inbound route", "WAN handoff"],
+    note: "The static IP is what makes direct inbound routing to the home lab predictable despite consumer CGNAT defaults.",
   },
   nginx: {
     title: "Nginx Reverse Proxy",
@@ -36,6 +39,7 @@ const components = {
     description:
       "Nginx receives public traffic, routes requests to the correct internal service by hostname, and keeps free SSL certificates renewed automatically for each host.",
     bullets: ["Automated free SSL renewal per host", "SSL handoff", "Host-based routing", "Force HTTPS", "Health checks"],
+    note: "Nginx is the internal front door, mapping hostnames to the right service while keeping certificates current.",
   },
   entra: {
     title: "Microsoft Entra ID",
@@ -45,6 +49,7 @@ const components = {
     description:
       "Entra handles single sign-on and access controls for services that need identity-aware access.",
     bullets: ["SSO and access policies", "MFA support", "External identity", "Conditional access"],
+    note: "Identity-aware services can lean on Entra rather than each app carrying its own access model.",
   },
   minecraft: {
     title: "Minecraft Server",
@@ -54,6 +59,7 @@ const components = {
     description:
       "A dedicated game service exposed through the home lab route with its own VM boundary.",
     bullets: ["Port 25565", "Dedicated VM", "Backups enabled", "Resource limits"],
+    note: "Minecraft runs as a public game workload behind the same ingress model as the rest of the lab.",
   },
   dayz: {
     title: "DayZ Server",
@@ -63,6 +69,7 @@ const components = {
     description:
       "DayZ hosting runs as an isolated service with public ingress routed through the same public IP.",
     bullets: ["Port 2302", "Dedicated VM", "Isolated configs", "Scheduled restarts"],
+    note: "DayZ is isolated as its own public game service so config, mods, and restarts stay contained.",
   },
   mitch: {
     title: "Mitch AI Assistant",
@@ -72,6 +79,7 @@ const components = {
     description:
       "Local AI workloads sit behind the reverse proxy so private tools can be reached securely.",
     bullets: ["Port 8080", "Local inference", "Private tools", "Controlled access"],
+    note: "Mitch is the local intelligence layer that other systems can call into through a controlled API boundary.",
   },
   filebrowser: {
     title: "FileBrowser",
@@ -88,6 +96,7 @@ const components = {
       "Dedicated public file share",
     ],
     readMoreHref: "/fileshare",
+    note: "FileBrowser gives the lab a public file-share surface without exposing the underlying Linux host directly.",
   },
   mitchmesh: {
     title: "MitchMesh",
@@ -104,6 +113,7 @@ const components = {
       "Motor controllers and power regulation onboard",
     ],
     readMoreHref: "/mitchmesh",
+    note: "MitchMesh extends the lab into physical hardware, letting Mitch coordinate GPS-aware field nodes.",
   },
   proxmox: {
     title: "Proxmox VE Cluster",
@@ -119,6 +129,7 @@ const components = {
       "Live migration and failover",
       "Backups and redundancy",
     ],
+    note: "The Proxmox cluster is the compute foundation for the self-hosted workloads and storage-backed VM estate.",
   },
   raspberry: {
     title: "House Wearable",
@@ -134,6 +145,7 @@ const components = {
       "Field base station for MitchMesh",
       "Mobile bridge between operator and mesh",
     ],
+    note: "House Wearable is the human-field interface between House, Mitch, and the MitchMesh hardware network.",
   },
 };
 
@@ -146,7 +158,7 @@ const accent = {
   red: "border-rose-200 text-rose-700 bg-rose-50",
 };
 
-const publicRepoComponents = new Set(["cloudflare", "minecraft", "dayz", "mitch", "mitchmesh"]);
+const publicRepoComponents = new Set(["cloudflare", "minecraft", "dayz", "mitch", "mitchmesh", "raspberry"]);
 
 function Nav() {
   return (
@@ -310,7 +322,7 @@ function DetailPanel({ selected, onClose }) {
           ))}
         </ul>
         <div className="mt-5 rounded-lg bg-blue-50 p-4 text-xs leading-5 text-slate-700">
-          This cluster runs all core services including game servers, AI tools, and self-hosted applications.
+          {item.note}
         </div>
         {showReadMore && (
           <a
@@ -327,11 +339,21 @@ function DetailPanel({ selected, onClose }) {
 
 function Diagram({ onSelect }) {
   const services = ["minecraft", "dayz", "mitch", "filebrowser", "mitchmesh", "raspberry"];
+  const serviceRailRef = useRef(null);
   const ingressFlow = [
     { id: "fasthosts", image: "/fasthosts.svg", imageClass: "h-6" },
     { id: "cloudflare", image: "/cloudflare.svg", imageClass: "h-9" },
     { id: "youfibre", image: "/youfibre.png", imageClass: "h-6" },
   ];
+  const scrollServices = (direction) => {
+    const rail = serviceRailRef.current;
+    if (!rail) return;
+
+    rail.scrollBy({
+      left: direction * rail.clientWidth,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section className="rounded-xl bg-slate-50 p-7 text-slate-900 shadow-2xl ring-1 ring-white/20">
@@ -368,13 +390,34 @@ function Diagram({ onSelect }) {
           <div className="absolute bottom-0 left-0 right-0 h-px bg-blue-400" />
         </div>
 
-        <div className="relative grid gap-4 pt-5 md:grid-cols-3 xl:grid-cols-6">
-          {services.map((service) => (
-            <div key={service} className="relative">
-              <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
-              <ServiceCard id={service} onSelect={onSelect} />
-            </div>
-          ))}
+        <div className="relative pt-5">
+          <button
+            type="button"
+            onClick={() => scrollServices(-1)}
+            className="absolute left-0 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-slate-200 bg-white text-lg font-black text-slate-700 shadow-md md:hidden"
+            aria-label="Previous service"
+          >
+            ‹
+          </button>
+          <div
+            ref={serviceRailRef}
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-11 pb-2 [scrollbar-width:none] md:grid md:overflow-visible md:px-0 md:pb-0 md:grid-cols-3 xl:grid-cols-6"
+          >
+            {services.map((service) => (
+              <div key={service} className="relative min-w-full snap-center md:min-w-0">
+                <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
+                <ServiceCard id={service} onSelect={onSelect} />
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => scrollServices(1)}
+            className="absolute right-0 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-slate-200 bg-white text-lg font-black text-slate-700 shadow-md md:hidden"
+            aria-label="Next service"
+          >
+            ›
+          </button>
         </div>
 
         <button
@@ -391,12 +434,17 @@ function Diagram({ onSelect }) {
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {["Node 1", "Node 2", "Node 3"].map((node) => (
-              <div key={node} className="flex items-center gap-3 rounded-md bg-white/70 p-3">
+            {[
+              ["McGregor", "Node 1"],
+              ["Pereira", "Node 2"],
+              ["Strickland", "Node 3"],
+            ].map(([name, node]) => (
+              <div key={name} className="flex items-center gap-3 rounded-md bg-white/70 p-3">
                 <ServerIcon />
                 <div>
                   <div className="text-[10px] font-black">HP ProLiant</div>
                   <div className="text-[10px]">ML350 Gen9</div>
+                  <div className="text-[10px] font-black text-slate-900">{name}</div>
                   <div className="text-[10px] font-bold text-emerald-600">{node}</div>
                 </div>
               </div>
