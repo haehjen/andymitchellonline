@@ -1,14 +1,32 @@
 import React, { useMemo, useState } from "react";
 
 const components = {
+  fasthosts: {
+    title: "Fasthosts",
+    subtitle: "Domain Registrar",
+    accent: "blue",
+    icon: "FH",
+    description:
+      "Fasthosts is the domain registrar for the public domain before DNS and website traffic are handled by Cloudflare.",
+    bullets: ["Domain registration", "Renewal management", "Nameserver delegation", "Registrar control"],
+  },
   cloudflare: {
-    title: "Cloudflare DNS & DDNS",
-    subtitle: "Domain Management",
+    title: "Cloudflare",
+    subtitle: "Website & DNS",
     accent: "orange",
     icon: "CF",
     description:
       "Cloudflare fronts the domain, keeps public records tidy, and points traffic at the single public IP for the lab.",
     bullets: ["DNS records", "DDNS automation", "Proxy and WAF rules", "TLS edge security"],
+  },
+  youfibre: {
+    title: "YouFibre",
+    subtitle: "ISP & Static IP",
+    accent: "red",
+    icon: "YF",
+    description:
+      "YouFibre provides the internet connection and static public IP that reaches the home lab.",
+    bullets: ["Static public IP", "Home fibre connection", "Inbound route", "WAN handoff"],
   },
   nginx: {
     title: "Nginx Reverse Proxy",
@@ -228,40 +246,40 @@ function ConnectionStep({ number, label, sub }) {
 
 function Diagram({ onSelect }) {
   const services = ["minecraft", "dayz", "mitch", "home", "docker"];
+  const ingressFlow = [
+    { id: "fasthosts", image: "/fasthosts.svg", imageClass: "h-6" },
+    { id: "cloudflare", image: "/cloudflare.svg", imageClass: "h-9" },
+    { id: "youfibre", image: "/youfibre.png", imageClass: "h-6" },
+  ];
 
   return (
     <section className="rounded-xl bg-slate-50 p-7 text-slate-900 shadow-2xl ring-1 ring-white/20">
       <div className="relative mx-auto max-w-[900px]">
         <div className="flex flex-col items-center">
-          <LogoBadge className="border-blue-200 text-blue-600">WEB</LogoBadge>
-          <div className="mt-2 text-[10px] font-black">Public Internet</div>
-          <div className="mt-2 h-6 w-px bg-blue-400" />
-          <div className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-black text-emerald-700">
-            1 Public IP
+          <div className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-[10px] font-black uppercase tracking-wide text-blue-700">
+            Public Internet
           </div>
           <div className="h-6 w-px bg-blue-400" />
+          <div className="grid w-full max-w-[760px] gap-4 md:grid-cols-3">
+            {ingressFlow.map((item) => (
+              <ExternalCard key={item.id} id={item.id} onSelect={onSelect}>
+                <img src={item.image} alt="" className={`mx-auto object-contain ${item.imageClass}`} />
+              </ExternalCard>
+            ))}
+          </div>
+          <div className="h-7 w-px bg-blue-400" />
         </div>
 
-        <div className="grid items-center gap-6 md:grid-cols-[150px_1fr_150px]">
-          <ExternalCard id="cloudflare" onSelect={onSelect}>
-            <img src="/cloudflare.svg" alt="" className="mx-auto h-10" />
-          </ExternalCard>
-
+        <div className="mx-auto max-w-[360px]">
           <button
             type="button"
             onClick={() => onSelect("nginx")}
-            className="relative rounded-lg border border-slate-200 bg-white px-8 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+            className="w-full rounded-lg border border-slate-200 bg-white px-8 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
           >
             <div className="text-3xl font-black tracking-tight text-emerald-600">NGINX</div>
             <div className="mt-1 text-xs font-black text-slate-950">Nginx Reverse Proxy</div>
             <div className="mt-1 text-[10px] text-slate-500">All incoming traffic routed by hostname</div>
-            <span className="absolute left-[-96px] top-1/2 hidden h-px w-24 border-t border-dashed border-blue-400 md:block" />
-            <span className="absolute right-[-96px] top-1/2 hidden h-px w-24 border-t border-dashed border-blue-400 md:block" />
           </button>
-
-          <ExternalCard id="entra" onSelect={onSelect}>
-            <img src="/entraid.svg" alt="" className="mx-auto h-10" />
-          </ExternalCard>
         </div>
 
         <div className="mx-auto mt-7 h-9 w-px bg-blue-400" />
