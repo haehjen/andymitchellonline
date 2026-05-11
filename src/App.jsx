@@ -344,10 +344,10 @@ function Diagram({ onSelect }) {
           <div className="absolute bottom-0 left-0 right-0 h-px bg-blue-400" />
         </div>
 
-        <div className="relative grid gap-4 md:grid-cols-5">
+        <div className="relative grid gap-4 pt-5 md:grid-cols-5">
           {services.map((service) => (
             <div key={service} className="relative">
-              <span className="absolute left-1/2 top-[-56px] hidden h-14 w-px -translate-x-1/2 bg-blue-400 md:block" />
+              <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
               <ServiceCard id={service} onSelect={onSelect} />
             </div>
           ))}
