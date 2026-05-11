@@ -121,13 +121,19 @@ const components = {
     ],
   },
   raspberry: {
-    title: "Raspberry Pi",
-    subtitle: "The Home Core",
+    title: "House Wearable",
+    subtitle: "Field Base Station",
     accent: "red",
     icon: "PI",
     description:
-      "A small always-on controller for low-power jobs and the basic home core services.",
-    bullets: ["Always on", "Low power", "Local utilities", "Fallback control"],
+      "A wearable Raspberry Pi carried by House, the architect. It talks to the Mitch API, passes text into the system, checks for instructions left by Mitch, and acts as a field base station for MitchMesh.",
+    bullets: [
+      "Wearable Raspberry Pi carried by House",
+      "Passes text to the Mitch API",
+      "Checks in for Mitch instructions",
+      "Field base station for MitchMesh",
+      "Mobile bridge between operator and mesh",
+    ],
   },
 };
 
@@ -158,7 +164,6 @@ function Nav() {
         <nav className="hidden items-center gap-9 text-xs font-semibold text-slate-300 md:flex">
           <a className="border-b-2 border-blue-500 pb-3 text-blue-300" href="#overview">Overview</a>
           <a href="#how">How It Works</a>
-          <a href="#connect">Connect</a>
           <a href="#blog">Blog</a>
           <a href="#about">About</a>
         </nav>
@@ -264,6 +269,8 @@ function ServiceCard({ id, onSelect }) {
                 ? "fileshare.andymitchell.online"
                 : id === "mitchmesh"
                   ? "LoRa + GPS"
+                  : id === "raspberry"
+                    ? "Wearable"
                   : "Private"}
       </div>
     </button>
@@ -316,20 +323,8 @@ function DetailPanel({ selected, onClose }) {
   );
 }
 
-function ConnectionStep({ number, label, sub }) {
-  return (
-    <div className="flex min-w-[96px] flex-1 flex-col items-center text-center">
-      <div className="grid h-12 w-12 place-items-center rounded-full border border-blue-400/25 bg-blue-500/10 text-sm font-black text-blue-300">
-        {number}
-      </div>
-      <div className="mt-3 text-xs font-bold text-white">{label}</div>
-      <div className="mt-1 text-[10px] text-slate-400">{sub}</div>
-    </div>
-  );
-}
-
 function Diagram({ onSelect }) {
-  const services = ["minecraft", "dayz", "mitch", "filebrowser", "mitchmesh"];
+  const services = ["minecraft", "dayz", "mitch", "filebrowser", "mitchmesh", "raspberry"];
   const ingressFlow = [
     { id: "fasthosts", image: "/fasthosts.svg", imageClass: "h-6" },
     { id: "cloudflare", image: "/cloudflare.svg", imageClass: "h-9" },
@@ -371,7 +366,7 @@ function Diagram({ onSelect }) {
           <div className="absolute bottom-0 left-0 right-0 h-px bg-blue-400" />
         </div>
 
-        <div className="relative grid gap-4 pt-5 md:grid-cols-5">
+        <div className="relative grid gap-4 pt-5 md:grid-cols-3 xl:grid-cols-6">
           {services.map((service) => (
             <div key={service} className="relative">
               <span className="absolute left-1/2 top-[-20px] hidden h-5 w-px -translate-x-1/2 bg-blue-400 md:block" />
@@ -415,18 +410,6 @@ function Diagram({ onSelect }) {
           </div>
         </button>
 
-        <button
-          type="button"
-          onClick={() => onSelect("raspberry")}
-          className="mx-auto mt-7 flex max-w-[300px] items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-rose-300 hover:shadow-md"
-        >
-          <LogoBadge className="rounded-lg border-rose-200 bg-rose-50 text-rose-700">PI</LogoBadge>
-          <div>
-            <div className="text-sm font-black">Raspberry Pi</div>
-            <div className="text-[10px] font-semibold">The Home Core</div>
-            <div className="mt-1 text-[10px] text-slate-500">Always on. Always here.</div>
-          </div>
-        </button>
       </div>
     </section>
   );
@@ -460,30 +443,6 @@ export default function App() {
                 </p>
               </div>
             </div>
-
-            <section id="connect" className="mt-8 rounded-xl border border-white/10 bg-[#0a1726]/80 p-5">
-              <h2 className="mb-5 text-sm font-black text-white">How to Connect</h2>
-              <div className="grid gap-7 lg:grid-cols-[1fr_290px]">
-                <div className="flex flex-col items-center gap-5 md:flex-row">
-                  <ConnectionStep number="1" label="Visit" sub="homelabos.com" />
-                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
-                  <ConnectionStep number="2" label="Secure Access" sub="SSL via Nginx" />
-                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
-                  <ConnectionStep number="3" label="Choose a Service" sub="Minecraft, Mitch, tools" />
-                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
-                  <ConnectionStep number="4" label="Authenticate" sub="Entra ID SSO" />
-                  <div className="hidden h-px w-10 bg-slate-500 md:block" />
-                  <ConnectionStep number="5" label="You're In" sub="Enjoy the experience" />
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                  <div className="text-lg font-black text-emerald-400">Zero Cost. Full Control.</div>
-                  <p className="mt-4 text-sm leading-6 text-slate-300">
-                    Built with open source. Hosted at home. Available to the world.
-                  </p>
-                  <p className="mt-4 text-sm font-semibold text-white">This is what's possible.</p>
-                </div>
-              </div>
-            </section>
           </section>
         </main>
       </div>
