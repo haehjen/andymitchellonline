@@ -247,31 +247,33 @@ function ServerIcon() {
 function ServiceCard({ id, onSelect }) {
   const item = components[id];
   const hasPublicRepo = publicRepoComponents.has(id);
+  const meta =
+    id === "minecraft"
+      ? "Port: 25565"
+      : id === "dayz"
+        ? "Port: 2302"
+        : id === "mitch"
+          ? "Port: 8080"
+          : id === "filebrowser"
+            ? "Public Share"
+            : id === "mitchmesh"
+              ? "LoRa + GPS"
+              : id === "raspberry"
+                ? "Wearable"
+                : "Private";
 
   return (
     <button
       type="button"
       onClick={() => onSelect(id)}
-      className="relative rounded-lg border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+      className="relative flex min-h-[128px] flex-col items-center rounded-lg border border-slate-200 bg-white px-3 py-4 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
     >
       {hasPublicRepo && <GitHubBadge />}
-      <LogoBadge className={`mx-auto mb-3 h-10 w-10 ${accent[item.accent]}`}>{item.icon}</LogoBadge>
-      <div className="text-xs font-black text-slate-900">{item.title}</div>
-      <div className="mt-1 text-[10px] font-semibold text-slate-500">{item.subtitle}</div>
-      <div className="mt-1 text-[10px] font-bold text-emerald-600">
-        {id === "minecraft"
-          ? "Port: 25565"
-          : id === "dayz"
-            ? "Port: 2302"
-            : id === "mitch"
-              ? "Port: 8080"
-              : id === "filebrowser"
-                ? "fileshare.andymitchell.online"
-                : id === "mitchmesh"
-                  ? "LoRa + GPS"
-                  : id === "raspberry"
-                    ? "Wearable"
-                  : "Private"}
+      <LogoBadge className={`mx-auto mb-2 h-9 w-9 ${accent[item.accent]}`}>{item.icon}</LogoBadge>
+      <div className="max-w-full text-[12px] font-black leading-4 text-slate-900">{item.title}</div>
+      <div className="mt-1 max-w-full text-[10px] font-semibold leading-4 text-slate-500">{item.subtitle}</div>
+      <div className="mt-auto max-w-full whitespace-nowrap pt-2 text-[10px] font-bold leading-3 text-emerald-600">
+        {meta}
       </div>
     </button>
   );
@@ -361,7 +363,7 @@ function Diagram({ onSelect }) {
           </button>
         </div>
 
-        <div className="relative mx-auto h-14 max-w-[720px]">
+        <div className="relative mx-auto h-14 max-w-[840px]">
           <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-blue-400" />
           <div className="absolute bottom-0 left-0 right-0 h-px bg-blue-400" />
         </div>
