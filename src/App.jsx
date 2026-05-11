@@ -16,8 +16,8 @@ const components = {
     accent: "orange",
     icon: "CF",
     description:
-      "Cloudflare fronts the domain, keeps public records tidy, and points traffic at the single public IP for the lab.",
-    bullets: ["DNS records", "DDNS automation", "Proxy and WAF rules", "TLS edge security"],
+      "Cloudflare handles public DNS, edge protection, and Cloudflare Pages hosting for this site before traffic reaches the home lab.",
+    bullets: ["Cloudflare Pages hosts this site", "DNS records", "DDNS automation", "Proxy and WAF rules", "TLS edge security"],
   },
   youfibre: {
     title: "YouFibre",
@@ -25,8 +25,8 @@ const components = {
     accent: "red",
     icon: "YF",
     description:
-      "YouFibre provides the internet connection and static public IP that reaches the home lab.",
-    bullets: ["Static public IP", "Home fibre connection", "Inbound route", "WAN handoff"],
+      "YouFibre provides the internet connection. CGNAT is the default, so a paid static IP is used as the mitigation for reliable inbound access.",
+    bullets: ["CGNAT by default", "Paid static IP mitigation", "Home fibre connection", "Inbound route", "WAN handoff"],
   },
   nginx: {
     title: "Nginx Reverse Proxy",
@@ -34,8 +34,8 @@ const components = {
     accent: "green",
     icon: "NX",
     description:
-      "Nginx receives public traffic and routes requests to the correct internal service by hostname.",
-    bullets: ["SSL handoff", "Host-based routing", "Force HTTPS", "Health checks"],
+      "Nginx receives public traffic, routes requests to the correct internal service by hostname, and keeps free SSL certificates renewed automatically for each host.",
+    bullets: ["Automated free SSL renewal per host", "SSL handoff", "Host-based routing", "Force HTTPS", "Health checks"],
   },
   entra: {
     title: "Microsoft Entra ID",
@@ -229,6 +229,7 @@ function ServiceCard({ id, onSelect }) {
 
 function DetailPanel({ selected, onClose }) {
   const item = components[selected];
+  const showReadMore = selected !== "fasthosts";
 
   return (
     <aside className="rounded-xl bg-white p-5 text-slate-800 shadow-2xl ring-1 ring-slate-200">
@@ -259,9 +260,11 @@ function DetailPanel({ selected, onClose }) {
         <div className="mt-5 rounded-lg bg-blue-50 p-4 text-xs leading-5 text-slate-700">
           This cluster runs all core services including game servers, AI tools, and self-hosted applications.
         </div>
-        <button className="mt-5 w-full rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500">
-          Read More →
-        </button>
+        {showReadMore && (
+          <button className="mt-5 w-full rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500">
+            Read More →
+          </button>
+        )}
       </div>
     </aside>
   );
