@@ -137,11 +137,17 @@ export default function HomelabLanding() {
         </div>
 
         {/* --- GREEN BUS (TOP ANCHOR) --- */}
-        <div className="relative w-full max-w-6xl mx-auto h-12 mb-2">
-           <div className="absolute top-0 left-[8%] right-[8%] h-px bg-emerald-500/40"></div>
-           <div className="grid grid-cols-6 h-full px-4">
+        {/* This bus bar is positioned above the service grid and its vertical lines extend downwards to connect. */}
+        <div className="relative w-full h-8 mb-2"> {/* Removed max-w-6xl mx-auto for better alignment with main content, adjusted height */}
+           {/* Horizontal line at the bottom of this container */}
+           <div className="absolute bottom-0 left-0 right-0 h-px bg-emerald-500/40"></div>
+           {/* Vertical lines container. Aligned with the horizontal line and service grid columns. */}
+           <div className="grid grid-cols-6 gap-4 absolute inset-x-0 bottom-0 h-full"> {/* Added gap-4 to match service grid, removed px-4, used inset-x-0 */}
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="flex justify-center relative"><div className="w-px h-full bg-emerald-500/40"></div></div>
+                <div key={i} className="flex justify-center relative">
+                    {/* Vertical line extending downwards from the horizontal line */}
+                    <div className="w-px h-4 bg-emerald-500/40 absolute top-full"></div> {/* Adjusted height and position */}
+                </div>
               ))}
            </div>
         </div>
@@ -162,12 +168,15 @@ export default function HomelabLanding() {
         </div>
 
         {/* --- ORANGE BUS (BOTTOM ANCHOR) --- */}
-        <div className="relative w-full max-w-6xl mx-auto h-12 mb-16">
-           <div className="absolute bottom-0 left-[4%] right-[10%] h-px bg-orange-500/40"></div>
-           <div className="grid grid-cols-6 h-full px-4">
+        {/* This bus bar is positioned below the service grid and its vertical lines extend upwards to connect. */}
+        <div className="relative w-full h-8 mt-2 mb-16"> {/* Removed max-w-6xl mx-auto, adjusted height, added mt-2 for spacing */}
+           {/* Horizontal line at the top of this container */}
+           <div className="absolute top-0 left-0 right-0 h-px bg-orange-500/40"></div>
+           {/* Vertical lines container. Aligned with the horizontal line and service grid columns. */}
+           <div className="grid grid-cols-6 gap-4 absolute inset-x-0 top-0 h-full"> {/* Added gap-4 to match service grid, removed px-4, used inset-x-0 */}
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-center relative">
-                   { (i === 0 || i === 1 || i === 3 || i === 5) && <div className="w-px h-full bg-orange-500/40"></div> }
+                   { (i === 0 || i === 1 || i === 3 || i === 5) && <div className="w-px h-4 bg-orange-500/40 absolute bottom-full"></div> } {/* Adjusted height and position */}
                 </div>
               ))}
            </div>
